@@ -1,0 +1,21 @@
+﻿using System.Collections.Generic;
+using HospitalAPI.DTO;
+using HospitalAPI.Model;
+
+namespace HospitalLibrary.Core.Service
+{
+    public interface IUserService
+    {
+        User GetUserWithEmail(string email);
+        User Register(RegisterDTO dto);
+        User UpdateProfile(User dto);
+        User GetUserByID(long id);
+        void Create(User user);
+        IEnumerable<User> GetAll();
+        User GetById(int id);
+        void Update(User user);
+        void Delete(User user);
+        bool isEmailExist(string email);
+
+    }
+}

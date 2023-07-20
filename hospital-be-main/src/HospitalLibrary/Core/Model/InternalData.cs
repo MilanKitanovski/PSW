@@ -2,6 +2,7 @@
 {
     public class InternalData
     {
+        public int Id { get; set; }
         private int UserId;
         private double BloodPressure;
         private double BloodSugar;

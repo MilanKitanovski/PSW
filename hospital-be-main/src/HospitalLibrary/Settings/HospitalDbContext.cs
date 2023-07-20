@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.Core.Model;
+﻿using System.Reflection;
+using HospitalAPI.Model;
+using HospitalLibrary.Core.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Settings
@@ -6,9 +8,14 @@ namespace HospitalLibrary.Settings
     public class HospitalDbContext : DbContext
     {
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<User> Users { get; set; }
+        //public DbSet<Blog> Blogs { get; set; }
+        //public DbSet<InternalData> InternalDatas { get; set; }
+        //public DbSet<Notification> Notifications { get; set; }
+        //public DbSet<Report> Reports { get; set; }
+        //public DbSet<Scheduling> Schedulings { get; set; }
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Room>().HasData(
@@ -16,6 +23,7 @@ namespace HospitalLibrary.Settings
                 new Room() { Id = 2, Number = "204", Floor = 2 },
                 new Room() { Id = 3, Number = "305B", Floor = 3 }
             );
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
         }
     }
