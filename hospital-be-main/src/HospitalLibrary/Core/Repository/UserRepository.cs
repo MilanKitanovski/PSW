@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using HospitalAPI.Model;
+using HospitalLibrary.Core.Model;
 using HospitalLibrary.Settings;
 
 namespace HospitalLibrary.Core.Repository
@@ -24,9 +25,10 @@ namespace HospitalLibrary.Core.Repository
             throw new System.NotImplementedException();
         }
 
-        public void Create(User room)
+        public void Create(User user)
         {
-            throw new System.NotImplementedException();
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
 
         public void Update(User room)

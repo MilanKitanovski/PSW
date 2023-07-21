@@ -51,8 +51,9 @@ namespace HospitalLibrary.Core.Service
                 user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
                 user.Email = dto.Email;
                 user.PhoneNumber = dto.PhoneNumber;
-                user.userType = UserType.Patient;
-                _userRepository.Create(user);
+                user.UserType = UserType.Patient;
+                user.IsBlock = false;
+                Create(user);
 
                 return user;
             }
