@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HospitalAPI.Enum;
+using System;
 
 namespace HospitalAPI.DTO
 {
@@ -9,6 +10,9 @@ namespace HospitalAPI.DTO
         public String Email { get; set; }
         public String Password { get; set; }
         public String PhoneNumber { get; set; }
-        
+        public UserType UserType { get; set; }
+        public Guid DoctorId { get; set; }
+
+
     }
 }

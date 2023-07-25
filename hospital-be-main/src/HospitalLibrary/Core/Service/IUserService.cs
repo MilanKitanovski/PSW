@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HospitalAPI.DTO;
 using HospitalAPI.Model;
 
@@ -12,10 +13,15 @@ namespace HospitalLibrary.Core.Service
         User GetUserByID(long id);
         void Create(User user);
         IEnumerable<User> GetAll();
-        User GetById(int id);
+        User GetById(Guid id);
         void Update(User user);
         void Delete(User user);
         bool isEmailExist(string email);
+        User Login(string email, string password);
+
+        string Authenticate(string email, string password);
+        bool EmailisUnique(string email);
+        User ChoseDoctor(User user, Guid doctorId);
 
     }
 }

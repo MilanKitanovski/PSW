@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.Exceptions;
+﻿using HospitalLibrary.Core.Model;
+using HospitalLibrary.Exceptions;
+using Microsoft.VisualBasic;
 using System;
 
 namespace HospitalAPI.Model
@@ -9,18 +11,18 @@ namespace HospitalAPI.Model
         public Guid? DoctorId;
 
         //mozda DateRange, da li nesto spada u taj date
-        public DateTime Start { get; set; }
-        public DateTime End { get ; set; }
+        
+        public DateRange DateInterval { get; private set; }
+
         public Boolean Urgent = false;
 
         public Scheduling() { }
 
-        public Scheduling(Guid id, Guid? doctorId, DateTime start, DateTime end)
+        public Scheduling(Guid id, Guid? doctorId, DateRange dateInterval)
         {
             Id = id;
             DoctorId = doctorId;
-            Start = start;
-            End = end;
+            DateInterval = dateInterval;
             Validate();
         }
 
@@ -30,9 +32,7 @@ namespace HospitalAPI.Model
                 throw new EntityObjectValidationFailedException();
             if (DoctorId.Equals(Guid.Empty))
                 throw new EntityObjectValidationFailedException();
-            if (Start == null)
-                throw new EntityObjectValidationFailedException();
-            if (End == null)
+            if (DateInterval == null)
                 throw new EntityObjectValidationFailedException();
         }
     }

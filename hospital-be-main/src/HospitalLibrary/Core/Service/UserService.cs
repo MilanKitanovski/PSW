@@ -5,6 +5,7 @@ using HospitalAPI.Enum;
 using HospitalAPI.Model;
 using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Repository;
+using HospitalLibrary.Exceptions;
 using HospitalLibrary.Settings;
 
 namespace HospitalLibrary.Core.Service
@@ -13,11 +14,14 @@ namespace HospitalLibrary.Core.Service
     {
         private readonly HospitalDbContext _hospitalDbContext;
         private readonly IUserRepository _userRepository;
+        private readonly IJwtService _jwtService;
 
-        public UserService(HospitalDbContext hospitalDbContext, IUserRepository userRepository)
+
+        public UserService(HospitalDbContext hospitalDbContext, IUserRepository userRepository, IJwtService jwtService)
         {
             _hospitalDbContext = hospitalDbContext;
             _userRepository = userRepository;
+            _jwtService = jwtService;
         }
         
         public IEnumerable<User> GetAll()
@@ -25,7 +29,7 @@ namespace HospitalLibrary.Core.Service
             return _userRepository.GetAll();
         }
 
-        public User GetById(int id)
+        public User GetById(Guid id)
         {
             return _userRepository.GetById(id);
         }
@@ -39,28 +43,60 @@ namespace HospitalLibrary.Core.Service
         {
             return _userRepository.isEmailExist(email);
         }
-        
+
+        public User Login(string email, string password)
+        {
+          
+            return null;
+        }
+
+        public string Authenticate(string email, string password)
+        {
+            //Password enteredPassword = new Password(password);
+            User user = _userRepository.GetUserWithEmail(email);
+
+            if (user == null)
+            {
+                throw new NotFoundException();
+            }
+
+            if(!user.Email.Equals(email))
+            {
+                throw new BadPasswordException();
+            }
+
+            if (!user.Password.Equals(password))
+            {
+                throw new BadPasswordException();
+            }
+
+
+            if (user.IsBlock)
+            {
+                throw new UserIsBlockedException();
+            }
+
+            return _jwtService.GenerateToken(user);
+        }
+
+        public bool isEmailUnique(String email)
+        {
+            if (_userRepository.GetByEmail(email) == null)
+                return true;
+            return false;
+        }
+
         public User Register(RegisterDTO dto)
         {
-            try
-            {
-                var user = new User();
-
-                user.Name = dto.Name;
-                user.Surname = dto.Surname;
-                user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-                user.Email = dto.Email;
-                user.PhoneNumber = dto.PhoneNumber;
-                user.UserType = UserType.Patient;
-                user.IsBlock = false;
-                Create(user);
-
-                return user;
-            }
-            catch (Exception e)
-            {
                 return null;
-            }
+        }
+
+        public User ChoseDoctor(User user, Guid doctorId)
+        {
+            var doctor = _userRepository.GetById(doctorId);
+            user.AppointTheChosenDoctor(doctor);
+            _userRepository.Create(user);
+            return user;
         }
 
         public User UpdateProfile(User dto)
@@ -86,6 +122,13 @@ namespace HospitalLibrary.Core.Service
         public void Delete(User user)
         {
             _userRepository.Delete(user);
+        }
+
+        public bool EmailisUnique(string email)
+        {
+            if (_userRepository.GetByEmail(email) == null)
+                return true;
+            return false;
         }
     }
 }

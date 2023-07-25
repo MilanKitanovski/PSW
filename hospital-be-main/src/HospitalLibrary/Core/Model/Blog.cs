@@ -10,6 +10,7 @@ namespace HospitalAPI.Model
         public Guid? DoctorId { get; set; }
         public string TextBlog { get; set; }
 
+
         public Blog() { }
 
         public Blog(Guid id, string textBlog, Guid? doctorId)

@@ -4,6 +4,8 @@ using Microsoft.VisualBasic;
 using System.ComponentModel.DataAnnotations;
 using HospitalLibrary.Exceptions;
 using System.Runtime.CompilerServices;
+using HospitalLibrary.Core.Model;
+using System.Numerics;
 
 namespace HospitalAPI.Model
 {
@@ -12,7 +14,7 @@ namespace HospitalAPI.Model
         public Guid Id { get; set; }
         public string Name { get;  set; }
         public string Surname { get;  set; }
-        public string Email { get;  set; }
+        public Email Email { get;  set; }
         //min vr 3
         //[MinLength(3)]
         public string Password { get;  set; }
@@ -22,15 +24,15 @@ namespace HospitalAPI.Model
 
         public User() { }
 
-        public User(/*Guid id,*/ string name, string surname, string email, string password, string phoneNumber, UserType userType)
+        public User(Guid id, string name, string surname, Email email, string password, string phoneNumber, UserType userType)
         {
-            //Id = id;
+            Id = id;
             Name = name;
             Surname = surname;
             Email = email;  
             Password = password;
             PhoneNumber = phoneNumber;
-            UserType = userType;
+            UserType = UserType.Patient;
             IsBlock = false;
             Validate();
         }
@@ -43,7 +45,7 @@ namespace HospitalAPI.Model
                 throw new EntityObjectValidationFailedException();
             if (string.IsNullOrEmpty(Surname))
                 throw new EntityObjectValidationFailedException();
-            if (string.IsNullOrEmpty(Email))
+            if (Email == null)
                 throw new EntityObjectValidationFailedException();
             if (string.IsNullOrEmpty(Password))
                 throw new EntityObjectValidationFailedException();
@@ -51,6 +53,22 @@ namespace HospitalAPI.Model
                 throw new EntityObjectValidationFailedException();
             if (UserType == null)
                 throw new EntityObjectValidationFailedException();
+        }
+
+
+        public User ChosenDoctor { get; set; }
+        public Guid ChosenDoctorId { get; private set; }
+
+        public void AppointTheChosenDoctor(User doctor)
+        {
+            if (doctor == null)
+                throw new EntityObjectValidationFailedException();
+            if (doctor.Id == Guid.Empty)
+                throw new EntityObjectValidationFailedException();
+
+            ChosenDoctor = doctor;
+            ChosenDoctorId = doctor.Id;
+
         }
 
         public void Block()
