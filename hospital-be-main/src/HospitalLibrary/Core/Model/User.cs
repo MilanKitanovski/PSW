@@ -6,6 +6,7 @@ using HospitalLibrary.Exceptions;
 using System.Runtime.CompilerServices;
 using HospitalLibrary.Core.Model;
 using System.Numerics;
+using HospitalLibrary.Core.Enum;
 
 namespace HospitalAPI.Model
 {
@@ -20,11 +21,14 @@ namespace HospitalAPI.Model
         public string Password { get;  set; }
         public string PhoneNumber { get;  set; }
         public UserType UserType { get;  set; } //{ get; private set; }
+
+        public Gender GenderUser { get; set; }
+
         public bool IsBlock = false;  
 
         public User() { }
 
-        public User(Guid id, string name, string surname, Email email, string password, string phoneNumber, UserType userType)
+        public User(Guid id, string name, string surname, Email email, string password, string phoneNumber, UserType userType, Gender genderUser)
         {
             Id = id;
             Name = name;
@@ -33,6 +37,7 @@ namespace HospitalAPI.Model
             Password = password;
             PhoneNumber = phoneNumber;
             UserType = UserType.Patient;
+            GenderUser = genderUser;
             IsBlock = false;
             Validate();
         }
@@ -52,6 +57,8 @@ namespace HospitalAPI.Model
             if (string.IsNullOrEmpty(Password))
                 throw new EntityObjectValidationFailedException();
             if (UserType == null)
+                throw new EntityObjectValidationFailedException();
+            if(GenderUser == null)
                 throw new EntityObjectValidationFailedException();
         }
 

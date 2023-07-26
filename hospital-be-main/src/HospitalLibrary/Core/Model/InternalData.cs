@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Exceptions;
+﻿using HospitalLibrary.Core.Model;
+using HospitalLibrary.Exceptions;
 using Microsoft.Extensions.Options;
 using System;
 using System.Security.Cryptography;
@@ -15,9 +16,11 @@ namespace HospitalAPI.Model
         public double Fats { get; set; }
         public double Weight { get; set; }
 
+        public DateRange Menstrual { get; set; }
+
         public InternalData() { }
 
-        public InternalData(Guid id, Guid? userId, double bloodPressure, double bloodSugar, double fats, double weight)
+        public InternalData(Guid id, Guid? userId, double bloodPressure, double bloodSugar, double fats, double weight, DateRange menstrual)
         {
             Id = id;
             UserId = userId;
@@ -25,6 +28,7 @@ namespace HospitalAPI.Model
             BloodSugar = bloodSugar;
             Fats = fats;
             Weight = weight;
+            Menstrual = menstrual;
             Validate();
         }
 
@@ -42,7 +46,21 @@ namespace HospitalAPI.Model
                 throw new EntityObjectValidationFailedException();
             if (double.IsNaN(Weight))
                 throw new EntityObjectValidationFailedException();
+        }
 
+        public void MenstrualCheck(User user, DateRange dateRange)
+        {
+            if (user.GenderUser.Equals(HospitalLibrary.Core.Enum.Gender.Male))
+            {
+                throw new MaleCantMensruation();
+            }
+
+            if (Menstrual == null)
+            {
+                throw new EntityObjectValidationFailedException();
+            }
+
+            Menstrual = dateRange;
         }
     }
 }
