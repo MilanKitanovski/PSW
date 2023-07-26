@@ -22,6 +22,8 @@ namespace HospitalLibrary.Core.Service
         string Authenticate(string email, string password);
         bool EmailisUnique(string email);
         User ChoseDoctor(User user, Guid doctorId);
+        IEnumerable<User> GetAllDoctors();
+
 
     }
 }

@@ -27,10 +27,12 @@ namespace HospitalAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IConfiguration _configuration;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IConfiguration configuration)
         {
             _userService = userService;
+            _configuration = configuration;
         }
 
         /* [HttpPost("register")]
@@ -78,9 +80,8 @@ namespace HospitalAPI.Controllers
             }
         }
 
+        [HttpPost("login")]
         [AllowAnonymous]
-        [HttpPost]
-        [Route("[action]")]
         public ActionResult Login([FromBody] LoginDTO loginDto)
         {
             try
@@ -116,7 +117,12 @@ namespace HospitalAPI.Controllers
             {
                 return BadRequest("Unknown error");
             }
+        }
 
+        [HttpGet("allDoctors")]
+        public ActionResult GetAllDoctors()
+        {
+            return Ok(_userService.GetAllDoctors());
         }
 
 

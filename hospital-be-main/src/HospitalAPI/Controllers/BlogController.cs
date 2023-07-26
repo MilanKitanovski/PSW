@@ -52,6 +52,5 @@ namespace HospitalAPI.Controllers
             return NoContent();
         }
 
-
     }
 }

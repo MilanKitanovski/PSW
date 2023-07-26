@@ -9,7 +9,7 @@ using Shouldly;
 using HospitalLibrary.Exceptions;
 using HospitalLibrary.Core.Enum;
 
-namespace HospitalAppTests.UserTests.UnitiTest
+namespace HospitalAppTests.UnitiTest
 {
     public class BlockingUserTest
     {

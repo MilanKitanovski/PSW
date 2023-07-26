@@ -6,15 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HospitalLibrary.Core.Service
+namespace HospitalLibrary.Core.Repository
 {
-    public interface IBlogService
+    public interface IBlogRepository
     {
-        Blog CreateBlog(Guid doctorId, string blogText);
         IEnumerable<Blog> GetAll();
         Blog GetById(Guid id);
+        void Create(Blog blog);
+        void Update(Blog blog);
         void Delete(Blog blog);
-
-
     }
 }
