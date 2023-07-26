@@ -14,5 +14,7 @@ namespace HospitalLibrary.Core.Repository
         User GetUserWithEmail(string email);
         bool isEmailExist(string email);
         User GetByEmail(string email);
+        IEnumerable<User> GetAllDoctors();
+
     }
 }

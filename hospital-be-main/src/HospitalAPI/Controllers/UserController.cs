@@ -27,12 +27,12 @@ namespace HospitalAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IBlogService _blogService;
+        private readonly IConfiguration _configuration;
 
-        public UserController(IUserService userService, IBlogService blogService)
+        public UserController(IUserService userService, IConfiguration configuration)
         {
             _userService = userService;
-            _blogService = blogService;
+            _configuration = configuration;
         }
 
         /* [HttpPost("register")]
@@ -117,25 +117,14 @@ namespace HospitalAPI.Controllers
             {
                 return BadRequest("Unknown error");
             }
-
         }
 
-        [HttpPost("createBlog")]
-        //Stavi da doktor to moze da radi
-        public ActionResult CreateBlog(Guid doctorId, string blogText)
+        [HttpGet("allDoctors")]
+        public ActionResult GetAllDoctors()
         {
-            //uzmi trenutnog doktora
-            Blog blog = new Blog(Guid.NewGuid(), blogText, doctorId);
-
-            return Ok(blog);
+            return Ok(_userService.GetAllDoctors());
         }
 
-        [HttpGet("allBlogs")]
-        [AllowAnonymous]
-        public ActionResult GetAllBlogs()
-        {
-            return Ok(_blogService.GetAll());
-        }
 
 
     }

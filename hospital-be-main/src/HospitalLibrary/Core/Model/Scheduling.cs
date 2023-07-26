@@ -8,7 +8,8 @@ namespace HospitalAPI.Model
     public class Scheduling
     {
         public Guid Id { get; set; }
-        public Guid? DoctorId;
+        public Guid? DoctorId { get; set; }
+        public Guid? UserId { get; set; }
 
         //mozda DateRange, da li nesto spada u taj date
         
@@ -18,10 +19,11 @@ namespace HospitalAPI.Model
 
         public Scheduling() { }
 
-        public Scheduling(Guid id, Guid? doctorId, DateRange dateInterval)
+        public Scheduling(Guid id, Guid? doctorId, Guid? userId, DateRange dateInterval)
         {
             Id = id;
             DoctorId = doctorId;
+            UserId = userId;
             DateInterval = dateInterval;
             Validate();
         }
@@ -31,6 +33,8 @@ namespace HospitalAPI.Model
             if (Id.Equals(Guid.Empty))
                 throw new EntityObjectValidationFailedException();
             if (DoctorId.Equals(Guid.Empty))
+                throw new EntityObjectValidationFailedException();
+            if (UserId.Equals(Guid.Empty))
                 throw new EntityObjectValidationFailedException();
             if (DateInterval == null)
                 throw new EntityObjectValidationFailedException();

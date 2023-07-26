@@ -8,6 +8,6 @@ namespace HospitalLibrary.Core.Enum
 {
     public enum BlogTheme
     {
-        Medicine, Healt, Actuel
+        Medicine, Health, Actual
     }
 }

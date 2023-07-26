@@ -130,5 +130,11 @@ namespace HospitalLibrary.Core.Service
                 return true;
             return false;
         }
+
+        public IEnumerable<User> GetAllDoctors()
+        {
+            return _userRepository.GetAllDoctors();
+        }
+
     }
 }

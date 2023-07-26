@@ -1,7 +1,11 @@
-﻿using HospitalAPI.Model;
+﻿using HospitalAPI.DTO;
+using HospitalAPI.Model;
+using HospitalLibrary.Core.DTO;
 using HospitalLibrary.Core.Service;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace HospitalAPI.Controllers
 {
@@ -19,11 +23,12 @@ namespace HospitalAPI.Controllers
         }
 
         [HttpPost("createBlog")]
+        [Authorize(Roles = "Doctor")]
         //Stavi da doktor to moze da radi
-        public ActionResult CreateBlog(Guid doctorId, string blogText)
+        public ActionResult CreateBlog([FromBody] BlogDTO dto)
         {
             //uzmi trenutnog doktora
-            Blog blog = new Blog(Guid.NewGuid(), blogText, doctorId); 
+            Blog blog = new Blog(Guid.NewGuid(), dto.TextBlog, dto.DoctorId, dto.Theme); 
 
             return Ok(blog);
         }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Core.Repository
 {
-    public class BlogRepository: IBlogRepository
+    public class BlogRepository : IBlogRepository
     {
         private readonly HospitalDbContext _context;
 

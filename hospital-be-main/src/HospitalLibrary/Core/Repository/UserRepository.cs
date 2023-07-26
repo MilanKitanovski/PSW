@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using HospitalAPI.Enum;
 using HospitalAPI.Model;
 using HospitalLibrary.Core.Model;
 using HospitalLibrary.Exceptions;
@@ -76,6 +77,12 @@ namespace HospitalLibrary.Core.Repository
         public User GetByEmail(string email)
         {
             return _context.Users.SingleOrDefault(p => p.Email.Address.Equals(email));
+        }
+
+
+        public IEnumerable<User> GetAllDoctors()
+        {
+            return _context.Users.Where(d => d.UserType==UserType.Doctor);
         }
 
         /*

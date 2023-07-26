@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Exceptions;
+﻿using HospitalLibrary.Core.Enum;
+using HospitalLibrary.Exceptions;
 using System;
 using System.ComponentModel.DataAnnotations;
 namespace HospitalAPI.Model
@@ -9,15 +10,17 @@ namespace HospitalAPI.Model
         public Guid Id { get; set; }
         public Guid? DoctorId { get; set; }
         public string TextBlog { get; set; }
+        public BlogTheme Theme { get; set; }
 
 
         public Blog() { }
 
-        public Blog(Guid id, string textBlog, Guid? doctorId)
+        public Blog(Guid id, string textBlog, Guid? doctorId, BlogTheme theme)
         {
             Id = id;
             DoctorId = doctorId;
             TextBlog = textBlog;
+            Theme = theme;
             Validate();
         }
 
@@ -28,6 +31,8 @@ namespace HospitalAPI.Model
             if (DoctorId.Equals(Guid.Empty))
                 throw new EntityObjectValidationFailedException();
             if (string.IsNullOrEmpty(TextBlog))
+                throw new EntityObjectValidationFailedException();
+            if(Theme == null)
                 throw new EntityObjectValidationFailedException();
         }
     }

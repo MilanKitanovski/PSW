@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Shouldly;
 using HospitalLibrary.Exceptions;
 
-namespace HospitalAppTests.UserTests.UnitiTest
+namespace HospitalAppTests.UnitiTest
 {
     public class BlockingUserTest
     {
