@@ -10,11 +10,9 @@ namespace HospitalLibrary.Settings
         public DbSet<Room> Rooms { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Blog> Blogs { get; set; }
-        //public DbSet<Blog> Blogs { get; set; }
-        //public DbSet<InternalData> InternalDatas { get; set; }
-        //public DbSet<Notification> Notifications { get; set; }
-        //public DbSet<Report> Reports { get; set; }
-        //public DbSet<Scheduling> Schedulings { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<InternalData> InternalDatas { get; set; }
+
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

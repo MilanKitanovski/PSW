@@ -16,14 +16,14 @@ namespace HospitalAppTests.UnitiTest
         public void Menstrual_Male()
         {
             User user = new User("Milan", "Kitanovski", new Email("Milan2000@gmail.com"), "123", "0606060" ,UserType.Patient, Gender.Male);
-            InternalData data = new InternalData(user.Id, 5, 5, 5, 5, null);
+            InternalData data = new InternalData(user.Id, 5, 5, 5, 5, false);
         }
 
         [Fact]
         public void Menstrual_Female()
         {
             User user = new User("Milana", "Kitanovski", new Email("Milana2000@gmail.com"), "123", "0606060", UserType.Patient, Gender.Female);
-            InternalData data = new InternalData(user.Id, 5, 5, 5, 5, null);
+            InternalData data = new InternalData(user.Id, 5, 5, 5, 5, false);
         }
 
     }

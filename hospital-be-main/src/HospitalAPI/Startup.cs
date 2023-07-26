@@ -40,6 +40,12 @@ namespace HospitalAPI
 
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IBlogRepository, BlogRepository>();
+
+            services.AddScoped<INotificationService, NotificationService>();   
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+
+            services.AddScoped<IInternalDataService, InternalDataService>();
+            services.AddScoped<IInternalDataRepository, InternalDataRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

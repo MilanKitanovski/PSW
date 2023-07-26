@@ -63,7 +63,7 @@ namespace HospitalAPI.Controllers
                     return Conflict("Email alredy exist");
                 }
 
-                User user = new User(Guid.NewGuid(), dto.Name, dto.Surname, new Email(dto.Email),dto.Password,dto.PhoneNumber, dto.UserType = UserType.Patient);
+                User user = new User(Guid.NewGuid(), dto.Name, dto.Surname, new Email(dto.Email),dto.Password,dto.PhoneNumber, dto.UserType = UserType.Patient, dto.gender);
 
                 _userService.ChoseDoctor(user, dto.DoctorId);
                 //_acountActivationService.SendVerificationLinkEmail(info);

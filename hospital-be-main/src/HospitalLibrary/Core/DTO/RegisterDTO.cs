@@ -1,4 +1,5 @@
 ﻿using HospitalAPI.Enum;
+using HospitalLibrary.Core.Enum;
 using System;
 
 namespace HospitalAPI.DTO
@@ -12,6 +13,7 @@ namespace HospitalAPI.DTO
         public String PhoneNumber { get; set; }
         public UserType UserType { get; set; }
         public Guid DoctorId { get; set; }
+        public Gender gender { get; set; }
 
 
     }
