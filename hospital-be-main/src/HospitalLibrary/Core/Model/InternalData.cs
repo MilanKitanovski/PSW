@@ -11,7 +11,7 @@ namespace HospitalAPI.Model
         public Guid Id { get; set; }
         public Guid? UserId;
         //validacija da je sve vece od 0
-        public double BloodPressure { get; set; }
+        public string BloodPressure { get; set; }
         public double BloodSugar { get; set; }
         public double Fats { get; set; }
         public double Weight { get; set; }
@@ -20,7 +20,7 @@ namespace HospitalAPI.Model
 
         public InternalData() { }
 
-        public InternalData(Guid id, Guid? userId, double bloodPressure, double bloodSugar, double fats, double weight, DateRange menstrual)
+        public InternalData(Guid id, Guid? userId, string bloodPressure, double bloodSugar, double fats, double weight, DateRange menstrual)
         {
             Id = id;
             UserId = userId;
@@ -38,7 +38,7 @@ namespace HospitalAPI.Model
                 throw new EntityObjectValidationFailedException();
             if (UserId.Equals(Guid.Empty))
                 throw new EntityObjectValidationFailedException();
-            if (double.IsNaN(BloodPressure))
+            if (string.IsNullOrEmpty(BloodPressure))
                 throw new EntityObjectValidationFailedException();
             if (double.IsNaN(BloodSugar))
                 throw new EntityObjectValidationFailedException();

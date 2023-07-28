@@ -21,7 +21,7 @@ namespace HospitalAPI.Controllers
         }
 
         [HttpPost("createNotification")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateNotification(NotificationDTO dto)
         {
             Notification notification = new Notification(Guid.NewGuid(), dto.AdminId, dto.TextNotification);
@@ -29,12 +29,14 @@ namespace HospitalAPI.Controllers
         }
 
         [HttpGet("allNotifications")]
+        [AllowAnonymous]
         public ActionResult GetAllBlogs()
         {
             return Ok(_notificationService.GetAll());
         }
 
         [HttpDelete("deleteNotification")]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteNotification(Guid id)
         {
             var notification = _notificationService.GetById(id);

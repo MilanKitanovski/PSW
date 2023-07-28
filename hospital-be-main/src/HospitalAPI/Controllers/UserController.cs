@@ -125,7 +125,23 @@ namespace HospitalAPI.Controllers
             return Ok(_userService.GetAllDoctors());
         }
 
+        [HttpPut("blockUser")]
+        public ActionResult BlockUser(Guid id)
+        {
+            //TODO Provera ako je otkazao 3 pregleda i obavestenje na mail-u
+            User user = _userService.GetById(id);
+            user.Block();
+            return Ok(user);
+        }
 
+        [HttpPut("unblockUser")]
+        public ActionResult UnlockUser(Guid id)
+        {
+            //TODO Provera ako je otkazao 3 pregleda i obavestenje na mail-u
+            User user = _userService.GetById(id);
+            user.Unblock();
+            return Ok(user);
+        }
 
     }
 }

@@ -28,6 +28,7 @@ namespace HospitalAPI.Controllers
         [Authorize(Roles = "Patient")]
         public IActionResult GetAllInternalDatas(Guid userId) 
         {
+            //TODO current user
             return Ok(_internalDataService.GetAllDatasForUser(userId));
         }
 
