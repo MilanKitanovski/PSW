@@ -8,16 +8,18 @@ namespace HospitalAPI.Model
     {
         public Guid Id { get; set; }
         public Guid? DoctorId { get; set; }
+        public Guid? UserId { get; set; }
         public string Diagnosis { get; set; }
         public string Treatment { get; set; }
         public InternalData InternalData { get; set; }
 
         public Report() { }
 
-        public Report(Guid id, Guid? doctorId, string diagnosis, string treatment, InternalData internalData) 
+        public Report(Guid id, Guid? doctorId, string diagnosis, string treatment, InternalData internalData, Guid? userId) 
         {
             Id = id;
             DoctorId = doctorId;
+            UserId = userId;
             Diagnosis = diagnosis;
             Treatment = treatment;
             InternalData = internalData;
@@ -35,6 +37,8 @@ namespace HospitalAPI.Model
             if (string.IsNullOrEmpty(Treatment))
                 throw new EntityObjectValidationFailedException();
             if (InternalData == null)
+                throw new EntityObjectValidationFailedException();
+            if(UserId.Equals(Guid.Empty))
                 throw new EntityObjectValidationFailedException();
         }
     }

@@ -5,6 +5,8 @@ using HospitalAPI.Enum;
 using HospitalAPI.Model;
 using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Repository;
+using HospitalLibrary.Core.Repository.Interfaces;
+using HospitalLibrary.Core.Service.Interfaces;
 using HospitalLibrary.Exceptions;
 using HospitalLibrary.Settings;
 
@@ -12,14 +14,12 @@ namespace HospitalLibrary.Core.Service
 {
     public class UserService : IUserService
     {
-        private readonly HospitalDbContext _hospitalDbContext;
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
 
 
-        public UserService(HospitalDbContext hospitalDbContext, IUserRepository userRepository, IJwtService jwtService)
+        public UserService( IUserRepository userRepository, IJwtService jwtService)
         {
-            _hospitalDbContext = hospitalDbContext;
             _userRepository = userRepository;
             _jwtService = jwtService;
         }
@@ -91,13 +91,13 @@ namespace HospitalLibrary.Core.Service
                 return null;
         }
 
-        public User ChoseDoctor(User user, Guid doctorId)
+/*        public User ChoseDoctor(User user, Guid doctorId)
         {
             var doctor = _userRepository.GetById(doctorId);
             user.AppointTheChosenDoctor(doctor);
             _userRepository.Create(user);
             return user;
-        }
+        } */
 
         public User UpdateProfile(User dto)
         {
@@ -130,11 +130,11 @@ namespace HospitalLibrary.Core.Service
                 return true;
             return false;
         }
-
+        /*
         public IEnumerable<User> GetAllDoctors()
         {
             return _userRepository.GetAllDoctors();
-        }
+        } */
 
     }
 }

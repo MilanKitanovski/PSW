@@ -1,0 +1,18 @@
+﻿using HospitalAPI.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HospitalLibrary.Core.Repository.Interfaces
+{
+    public interface IBlogRepository
+    {
+        IEnumerable<Blog> GetAll();
+        Blog GetById(Guid id);
+        void Create(Blog blog);
+        void Update(Blog blog);
+        void Delete(Blog blog);
+    }
+}

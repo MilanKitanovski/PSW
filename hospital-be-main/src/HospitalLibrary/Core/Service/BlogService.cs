@@ -1,6 +1,8 @@
 ﻿using HospitalAPI.Model;
 using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Repository;
+using HospitalLibrary.Core.Repository.Interfaces;
+using HospitalLibrary.Core.Service.Interfaces;
 using HospitalLibrary.Settings;
 using System;
 using System.Collections.Generic;
@@ -13,12 +15,12 @@ namespace HospitalLibrary.Core.Service
     public class BlogService: IBlogService
     {
         private readonly IBlogRepository _blogRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IDoctorRepository _doctorRepository;
 
-        public BlogService(IBlogRepository blogRepository, IUserRepository userRepository)
+        public BlogService(IBlogRepository blogRepository, IDoctorRepository doctorRepository)
         {
             _blogRepository = blogRepository;
-            _userRepository = userRepository;
+            _doctorRepository = doctorRepository;
         }
 
 

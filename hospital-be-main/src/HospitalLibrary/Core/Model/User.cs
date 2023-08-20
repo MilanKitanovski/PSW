@@ -13,31 +13,24 @@ namespace HospitalAPI.Model
     public class User
     {
         public Guid Id { get; set; }
-        public string Name { get;  set; }
-        public string Surname { get;  set; }
-        public Email Email { get;  set; }
-        //min vr 3
-        //[MinLength(3)]
-        public string Password { get;  set; }
-        public string PhoneNumber { get;  set; }
-        public UserType UserType { get;  set; } //{ get; private set; }
 
-        public Gender GenderUser { get; set; }
+        public Guid? PersonId { get; set; }
+        public UserType UserType { get; set; }
+        public Email Email { get;  set; }
+   
+        public string Password { get;  set; }
+       
 
         public bool IsBlock = false;  
 
         public User() { }
-
-        public User(Guid id, string name, string surname, Email email, string password, string phoneNumber, UserType userType, Gender genderUser)
+        public User(Guid id, Guid? personId, UserType userType, Email email, string password)
         {
             Id = id;
-            Name = name;
-            Surname = surname;
+            PersonId = personId;
+            UserType = userType;
             Email = email;  
             Password = password;
-            PhoneNumber = phoneNumber;
-            UserType = UserType.Patient;
-            GenderUser = genderUser;
             IsBlock = false;
             Validate();
         }
@@ -46,37 +39,14 @@ namespace HospitalAPI.Model
         {
             if (Id.Equals(Guid.Empty))
                 throw new EntityObjectValidationFailedException();
-            if (string.IsNullOrEmpty(Name))
-                throw new EntityObjectValidationFailedException();
-            if (string.IsNullOrEmpty(Surname))
-                throw new EntityObjectValidationFailedException();
             if (Email == null)
                 throw new EntityObjectValidationFailedException();
             if (string.IsNullOrEmpty(Password))
                 throw new EntityObjectValidationFailedException();
-            if (string.IsNullOrEmpty(Password))
-                throw new EntityObjectValidationFailedException();
-            if (UserType == null)
-                throw new EntityObjectValidationFailedException();
-            if(GenderUser == null)
-                throw new EntityObjectValidationFailedException();
         }
 
 
-        public User ChosenDoctor { get; set; }
-        public Guid ChosenDoctorId { get; private set; }
 
-        public void AppointTheChosenDoctor(User doctor)
-        {
-            if (doctor == null)
-                throw new EntityObjectValidationFailedException();
-            if (doctor.Id == Guid.Empty)
-                throw new EntityObjectValidationFailedException();
-
-            ChosenDoctor = doctor;
-            ChosenDoctorId = doctor.Id;
-
-        }
 
         public void Block()
         {

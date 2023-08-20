@@ -8,15 +8,26 @@ using System.Threading.Tasks;
 using Shouldly;
 using HospitalLibrary.Exceptions;
 using HospitalLibrary.Core.Enum;
+using HospitalLibrary.Core.Model;
 
 namespace HospitalAppTests.UnitiTest
 {
     public class BlockingUserTest
     {
+
+        [Fact]
+        public void Blocking_unblocked_user_with_more_than_enough_suspicious_activities()
+        {
+            User user = new User(Guid.NewGuid(), Guid.NewGuid(), UserType.Patient, new Email("milan.kitanovski@gmail.com"), "Test");
+            user.Block();
+            user.IsBlock.ShouldBe(true);
+        }
+
         [Fact]
         public void Unblocking_blocked_user()
         {
-            User user = new User("Test", "Test", "Test", "Test", "Test", UserType.Patient, Gender.Male);
+            //User user = new User(Guid.NewGuid(), "Milan", "Milanovic", new Email("milan.kitanovski@gmail.com"), "Test", "1234");
+            User user = new User(Guid.NewGuid(), Guid.NewGuid(), UserType.Patient, new Email("milan.kitanovski@gmail.com"), "Test");
             user.Block();
             user.Unblock();
             user.IsBlock.ShouldBe(false);
@@ -25,22 +36,14 @@ namespace HospitalAppTests.UnitiTest
         [Fact]
         public void Unblocking_unblocked_user()
         {
-            User user = new User("Test", "Test", "Test", "Test", "Test", UserType.Patient, Gender.Male);
+            User user = new User(Guid.NewGuid(), Guid.NewGuid(), UserType.Patient, new Email("milan.kitanovski@gmail.com"), "Test");
             Should.Throw<UserIsNotBlockedException>(() => user.Unblock());
-        }
-
-        [Fact]
-        public void Blocking_unblocked_user_with_more_than_enough_suspicious_activities()
-        {
-            User user = new User("Test", "Test", "Test", "Test", "Test", UserType.Patient, Gender.Male);
-            user.Block();
-            user.IsBlock.ShouldBe(true);
         }
 
         [Fact]
         public void Blocking_blocked_patient()
         {
-            User user = new User("Test", "Test", "Test", "Test", "Test", UserType.Patient, Gender.Male);
+            User user = new User(Guid.NewGuid(), Guid.NewGuid(), UserType.Patient, new Email("milan.kitanovski@gmail.com"), "Test");
             user.Block();
             Should.Throw<UserIsAlreadyBlockedException>(() => user.Block());
         }

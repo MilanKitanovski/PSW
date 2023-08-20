@@ -5,7 +5,7 @@ using HospitalLibrary.Core.Service;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Microsoft.AspNetCore.Authorization;
-
+using HospitalLibrary.Core.Service.Interfaces;
 
 namespace HospitalAPI.Controllers
 {

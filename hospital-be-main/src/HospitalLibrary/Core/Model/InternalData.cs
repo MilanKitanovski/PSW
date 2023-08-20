@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Core.Model;
+﻿using HospitalLibrary.Core.Enum;
+using HospitalLibrary.Core.Model;
 using HospitalLibrary.Exceptions;
 using Microsoft.Extensions.Options;
 using System;
@@ -48,9 +49,9 @@ namespace HospitalAPI.Model
                 throw new EntityObjectValidationFailedException();
         }
 
-        public void MenstrualCheck(User user, DateRange dateRange)
+        public void MenstrualCheck(Patient user, DateRange dateRange)
         {
-            if (user.GenderUser.Equals(HospitalLibrary.Core.Enum.Gender.Male))
+            if (user.GenderUser.Equals(Gender.Male))
             {
                 throw new MaleCantMensruation();
             }

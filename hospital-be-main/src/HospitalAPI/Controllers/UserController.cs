@@ -19,6 +19,9 @@ using System.Security.Claims;
 using HospitalLibrary.Exceptions;
 using HospitalLibrary.Core.Model;
 using System.Net;
+using HospitalLibrary.Core.Service.Interfaces;
+using HospitalLibrary.Core.Repository.Interfaces;
+using HospitalLibrary.Core.Enum;
 
 namespace HospitalAPI.Controllers
 {
@@ -26,13 +29,14 @@ namespace HospitalAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
-
-        public UserController(IUserService userService, IConfiguration configuration)
+        private readonly IPatientService _petientService;
+        private readonly IUserService _userService;
+        public UserController( IConfiguration configuration, IPatientService petientService, IUserService userService)
         {
-            _userService = userService;
             _configuration = configuration;
+            _petientService = petientService;
+            _userService = userService;
         }
 
         /* [HttpPost("register")]
@@ -58,15 +62,10 @@ namespace HospitalAPI.Controllers
         {
             try
             {
-                if (!_userService.EmailisUnique(dto.Email))
-                {
-                    return Conflict("Email alredy exist");
-                }
+             
 
-                User user = new User(Guid.NewGuid(), dto.Name, dto.Surname, new Email(dto.Email),dto.Password,dto.PhoneNumber, dto.UserType = UserType.Patient, dto.gender);
-
-                _userService.ChoseDoctor(user, dto.DoctorId);
-                //_acountActivationService.SendVerificationLinkEmail(info);
+                Patient patient = new Patient(Guid.NewGuid(), dto.Name, dto.Surname, /*new Email(dto.Email),dto.Password, */dto.PhoneNumber, dto.Gender);
+                _petientService.RegisterPatient(patient, dto.DoctorId);
 
                 return Ok();  
             }
@@ -119,10 +118,11 @@ namespace HospitalAPI.Controllers
             }
         }
 
+
         [HttpGet("allDoctors")]
         public ActionResult GetAllDoctors()
         {
-            return Ok(_userService.GetAllDoctors());
+            return Ok(/*_userService.GetAllDoctors()*/);
         }
 
         [HttpPut("blockUser")]

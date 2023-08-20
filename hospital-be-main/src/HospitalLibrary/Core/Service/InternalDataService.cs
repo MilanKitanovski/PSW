@@ -1,5 +1,7 @@
 ﻿using HospitalAPI.Model;
 using HospitalLibrary.Core.Repository;
+using HospitalLibrary.Core.Repository.Interfaces;
+using HospitalLibrary.Core.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +50,7 @@ namespace HospitalLibrary.Core.Service
 
         public IEnumerable<InternalData> GetAllDatasForUser(Guid userId)
         {
-            _internalDataRepository.GetAllDatasForUser(userId);
+            return _internalDataRepository.GetAllDatasForUser(userId);
         }
     }
 }

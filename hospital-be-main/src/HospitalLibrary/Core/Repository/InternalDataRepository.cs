@@ -1,5 +1,6 @@
 ﻿using HospitalAPI.Enum;
 using HospitalAPI.Model;
+using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using System;

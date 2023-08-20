@@ -1,5 +1,6 @@
 ﻿using HospitalAPI.Model;
 using HospitalLibrary.Core.Model;
+using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Settings;
 using System;
 using System.Collections.Generic;

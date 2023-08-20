@@ -13,7 +13,7 @@ namespace HospitalAPI.DTO
         public String PhoneNumber { get; set; }
         public UserType UserType { get; set; }
         public Guid DoctorId { get; set; }
-        public Gender gender { get; set; }
+        public Gender Gender { get; set; }
 
 
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HospitalLibrary.Core.DTO;
 using HospitalLibrary.Core.Service;
+using HospitalLibrary.Core.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 

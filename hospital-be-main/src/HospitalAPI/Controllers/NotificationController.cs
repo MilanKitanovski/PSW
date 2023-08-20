@@ -1,6 +1,7 @@
 ﻿using HospitalAPI.Model;
 using HospitalLibrary.Core.DTO;
 using HospitalLibrary.Core.Service;
+using HospitalLibrary.Core.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
