@@ -7,6 +7,7 @@ using HospitalLibrary.Core.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 
 namespace HospitalAPI.Controllers
 {
@@ -33,20 +34,31 @@ namespace HospitalAPI.Controllers
 
         [HttpPost("createReport")]
         //[Authorize(Roles = "Doctor")]
-        public ActionResult createReport([FromBody] ReportDTO dto)
+        public ActionResult CreateReport([FromBody] ReportDTO dto)
         {
             try
             {
                 User user = _jwtService.GetCurrentUser(HttpContext.User);
                 Patient patient = _patientService.GetById(dto.PatientId);
-                Doctor doctor = _doctorService.GetById(dto.DoctorId);
+                Doctor doctor = _doctorService.GetById(user.PersonId);
                 Appointment appointment = _appointmentService.GetById(dto.AppointmentId);
-                var internalData = new InternalData(Guid.NewGuid(), patient, dto.InternalData.BloodPressure, dto.InternalData.BloodSugar, dto.InternalData.Fats, dto.InternalData.Weight, dto.InternalData.Menstrual);
-                _internalDataService.Create(internalData);
 
-                var report = new Report(Guid.NewGuid(), doctor, dto.Diagnosis, dto.Treatment, internalData, patient, appointment);
-                _reportService.Create(report);
-                _appointmentService.FinishAppointment(dto.AppointmentId);
+                if (dto.InternalData != null)
+                {
+                    var internalData = new InternalData(Guid.NewGuid(), patient, dto.InternalData.BloodPressure, dto.InternalData.BloodSugar, dto.InternalData.Fats, dto.InternalData.Weight, dto.InternalData.Menstrual);
+                    _internalDataService.Create(internalData);
+                    var report = new Report(Guid.NewGuid(), doctor, dto.Diagnosis, dto.Treatment, internalData, patient, appointment);
+                    _reportService.Create(report);
+                    _appointmentService.FinishAppointment(dto.AppointmentId);
+                }
+                else
+                {
+            
+                    var report = new Report(Guid.NewGuid(), doctor, dto.Diagnosis, dto.Treatment, null, patient, appointment);
+                    _reportService.Create(report);
+                    _appointmentService.FinishAppointment(dto.AppointmentId);
+                }
+           
 
                 return Ok(new { message = "Report created" });
             }catch(Exception ex)
@@ -58,13 +70,18 @@ namespace HospitalAPI.Controllers
 
         [HttpGet("allReports")]
         [Authorize(Roles = "Patient")]
-        public ActionResult GetAllReportsFromUser(Guid id)
+        public ActionResult GetAllReportsFromUser()
         {
             try
             {
-                //TODO id trenutnog user-a
-                var reports = _reportService.GetAllReportsFromUser(id);
-                return Ok(reports);
+                User user = _jwtService.GetCurrentUser(HttpContext.User);
+                var reports = _reportService.GetAllReportsFromUser(user.PersonId);
+                List<ReportForPatientView> patientView = new List<ReportForPatientView>();
+                foreach (var report in reports) 
+                {
+                    patientView.Add(new ReportForPatientView(report));
+                }
+                return Ok(patientView);
             }
             catch(Exception ex)
             {

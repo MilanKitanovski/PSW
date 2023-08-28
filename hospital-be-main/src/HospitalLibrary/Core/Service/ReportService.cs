@@ -28,7 +28,7 @@ namespace HospitalLibrary.Core.Service
             _reportRepository.Delete(report);
         }
 
-        public IEnumerable<Report> GetAllReportsFromUser(Guid id)
+        public List<Report> GetAllReportsFromUser(Guid id)
         {
             return _reportRepository.GetAllReportsFromUser(id);
         }

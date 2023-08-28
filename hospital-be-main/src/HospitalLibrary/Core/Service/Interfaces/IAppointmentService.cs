@@ -28,5 +28,6 @@ namespace HospitalLibrary.Core.Service.Interfaces
         void FinishAppointment(Guid appointmentId);
 
         bool CheckAppointmentTime(DateTime dt);
+        List<Appointment> GetAllAppointmentsByPatient(Guid personId);
     }
 }

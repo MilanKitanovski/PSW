@@ -237,5 +237,10 @@ namespace HospitalLibrary.Core.Service
         {
             return _appointmentRepository.GetAllAppointmentsByDoctor(doctorId);
         }
+
+        public List<Appointment> GetAllAppointmentsByPatient(Guid personId)
+        {
+            return _appointmentRepository.GetAllAppointmentsByPatient(personId);
+        }
     }
 }

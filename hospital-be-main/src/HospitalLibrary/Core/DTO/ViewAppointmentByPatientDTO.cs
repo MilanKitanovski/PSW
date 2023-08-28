@@ -1,26 +1,26 @@
-﻿
-using HospitalLibrary.Core.Enum;
+﻿using HospitalLibrary.Core.Enum;
 using HospitalLibrary.Core.Model;
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HospitalLibrary.Core.DTO
 {
-    public class ViewAppointmentByDoctorDTO
+    public class ViewAppointmentByPatientDTO
     {
-        public Guid PatientId { get; set; }
         public Status Status { get; set; }
-        public string PatientName { get; set; }
+        public string DoctorName { get; set; }
         public Guid AppointmentId { get; set; }
         public DateRange Date { get; set; }
 
-        public ViewAppointmentByDoctorDTO(Appointment app)
+        public ViewAppointmentByPatientDTO(Appointment app)
         {
-            PatientId = app.PatientId;
             Status = app.Status;
             Date = app.Range;
             AppointmentId = app.Id;
-            PatientName = app.Patient.Name + ' ' + app.Patient.Surname;
+            DoctorName = app.Doctor.GetFullName();
         }
     }
 }

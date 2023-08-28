@@ -25,6 +25,9 @@ import {MatInputModule} from "@angular/material/input";
 import { SpecialistScheduleComponent } from './specialist-schedule/specialist-schedule.component';
 import {AllDIrectionsComponent} from './all-directions/all-directions.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { ViewAppointmentsPatientComponent } from './view-appointments-patient/view-appointments-patient.component';
+import { CreateDirectionComponent } from './create-direction/create-direction.component';
+import { CreateReportComponent } from './create-report/create-report.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,11 @@ import {MatDialogModule} from "@angular/material/dialog";
     CreateInternalDataComponent,
     ViewInternalDataPatientComponent,
     SpecialistScheduleComponent,
-    AllDIrectionsComponent
+    AllDIrectionsComponent,
+    ViewAppointmentsPatientComponent,
+    ViewInternalDataPatientComponent,
+    CreateDirectionComponent,
+    CreateReportComponent
   ],
   imports: [
     MatNativeDateModule,

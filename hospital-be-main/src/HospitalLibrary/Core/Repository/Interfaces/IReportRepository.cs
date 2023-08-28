@@ -12,6 +12,6 @@ namespace HospitalLibrary.Core.Repository.Interfaces
         Report GetById(Guid id);
         void Create(Report report);
         void Delete(Report report);
-        IEnumerable<Report> GetAllReportsFromUser(Guid id);
+        List<Report> GetAllReportsFromUser(Guid id);
     }
 }

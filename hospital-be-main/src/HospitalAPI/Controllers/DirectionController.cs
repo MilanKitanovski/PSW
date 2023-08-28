@@ -58,7 +58,6 @@ namespace HospitalAPI.Controllers
         {
             try
             {
-       
                 var directionDto = _mapper.Map<Direction>(dto);
                 Patient patient = _patientService.GetById(directionDto.PatientId);
                 Direction direction = new Direction(Guid.NewGuid(),patient,dto.Specialization);

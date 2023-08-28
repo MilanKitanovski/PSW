@@ -20,6 +20,7 @@ namespace HospitalLibrary.Core.Repository.Interfaces
         IEnumerable<Appointment> GetCanceledAppointmentsByPatient(Guid patientId);
 
         List<Appointment> GetAllAppointmentsByDoctor(Guid doctorId);
+        List<Appointment> GetAllAppointmentsByPatient(Guid personId);
     }
 }
 

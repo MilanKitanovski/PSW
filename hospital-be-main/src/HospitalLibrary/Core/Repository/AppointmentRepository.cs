@@ -63,6 +63,11 @@ namespace HospitalLibrary.Core.Repository
             return _context.Appointments.Where(a => a.DoctorId == doctorId).ToList();
         }
 
+        public List<Appointment> GetAllAppointmentsByPatient(Guid personId)
+        {
+            return _context.Appointments.Where(a => a.PatientId == personId).ToList();
+        }
+
         public void Update(Appointment appointment)
         {
             _context.Entry(appointment).State = EntityState.Modified;

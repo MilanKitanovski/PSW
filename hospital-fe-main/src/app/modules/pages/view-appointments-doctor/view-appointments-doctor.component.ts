@@ -8,6 +8,10 @@ import {range} from "rxjs";
 import {DateRange} from "../../hospital/model/date-range.model";
 import {RegisterComponent} from "../register/register.component";
 import {Register} from "../../hospital/model/register.model";
+import {SpecialistScheduleComponent} from "../specialist-schedule/specialist-schedule.component";
+import {MatDialog} from "@angular/material/dialog";
+import {CreateDirectionComponent} from "../create-direction/create-direction.component";
+import {CreateReportComponent} from "../create-report/create-report.component";
 
 const today = new Date();
 const month = today.getMonth();
@@ -24,10 +28,10 @@ export class ViewAppointmentsDoctorComponent implements OnInit {
     start: new FormControl(new Date(year, month, 13)),
     end: new FormControl(new Date(year, month, 16)),
   });
-  displayedColumns: string[] = ['Time', 'Patient', 'Direction'];
+  displayedColumns: string[] = ['Time', 'Patient', 'Direction', 'Report'];
   dataSource : any[] = [];
 
-  constructor(private appointmentService:AppointmentService) { }
+  constructor(private appointmentService:AppointmentService, public dialog: MatDialog) { }
 
 
 
@@ -38,8 +42,25 @@ export class ViewAppointmentsDoctorComponent implements OnInit {
   });
   }
 
-  direction(){
+  direction(dto : any){
+    const dialogRef = this.dialog.open(CreateDirectionComponent, {
+      data: dto  // Pass the element to the dialog component
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+
+  }
+
+  report(dto : any){
+    const dialogRef = this.dialog.open(CreateReportComponent, {
+      data: dto  // Pass the element to the dialog component
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
 }

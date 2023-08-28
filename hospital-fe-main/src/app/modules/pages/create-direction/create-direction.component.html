@@ -1,0 +1,11 @@
+<form [formGroup]="directionForm">
+  <mat-form-field>
+    <mat-label for="doctor"></mat-label>
+    <mat-select formControlName="doctorId">
+      <mat-option *ngFor="let el of specialization" [value]="el.id">
+        {{el.text}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-button mat-raised-button color="accent" (click)="directionCreate()">Create Direction</button>
+</form>

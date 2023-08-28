@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Core.DTO
 {
-    public class ReportDTO
+    public class ReportForPatientView
     {
-
-        public Guid PatientId { get; set; }
         public string Diagnosis { get; set; }
         public string Treatment { get; set; }
-        public InternalDataDTO InternalData { get; set; }
-        public Guid AppointmentId { get; set; }
+        
+        public ReportForPatientView(Report report) 
+        {
+            Diagnosis = report.Diagnosis;
+            Treatment = report.Treatment;
+        }
     }
 }

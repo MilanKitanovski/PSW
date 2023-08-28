@@ -1,0 +1,76 @@
+<div>
+  <label>Choose</label>
+  <mat-radio-group
+
+    [(ngModel)]="favoriteSeason">
+    <mat-radio-button  *ngFor="let season of seasons" [value]="season">
+      {{season}}
+    </mat-radio-button>
+  </mat-radio-group>
+  <table class="mat-elevation-z8 center-table">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="Report">
+      <th mat-header-cell *matHeaderCellDef>Report</th>
+      <td>
+        <form [formGroup]="reportForm">
+          <div class="form-group">
+            <label for="diagnosis"></label>
+            <input type="text" id="diagnosis" formControlName="diagnosis" class="form-control" placeholder="diagnosis">
+          </div>
+          <div class="form-group">
+            <label for="treatment"></label>
+            <input type="text" id="treatment" formControlName="treatment" class="form-control" placeholder="treatment">
+          </div>
+        </form>
+      </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="InternalData">
+      <th mat-header-cell *matHeaderCellDef> Internal Data </th>
+      <td>
+        <form [formGroup]="internalDataForm">
+          <div class="form-group">
+            <label for="bloodPressure"></label>
+            <input type="text" id="bloodPressure" formControlName="bloodPressure" class="form-control" placeholder="Blood Pressure">
+          </div>
+          <div class="form-group">
+            <label for="bloodSugar"></label>
+            <input type="number" id="bloodSugar" formControlName="bloodSugar" class="form-control" placeholder="Blood Sugar">
+          </div>
+          <div class="form-group">
+            <label for="fats"></label>
+            <input type="number" id="fats" formControlName="fats" class="form-control" placeholder="Fats">
+          </div>
+          <div class="form-group">
+            <label for="weight"></label>
+            <input type="number" id="weight" formControlName="weight" class="form-control" placeholder="Weight">
+          </div>
+
+          <mat-form-field class="example-form-field">
+            <mat-label>First campaign</mat-label>
+            <mat-date-range-input
+              [formGroup]="campaignOne"
+              [rangePicker]="campaignOnePicker"
+            >
+              <input matStartDate placeholder="Start date" formControlName="start">
+              <input matEndDate placeholder="End date" formControlName="end">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="campaignOnePicker"></mat-datepicker-toggle>
+            <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+          </mat-form-field>
+
+        </form>
+      </td>
+    </ng-container>
+    <div class="form-group">
+      <button mat-button mat-raised-button color="accent" (click)="submit()">Submit</button>
+    </div>
+
+  </table>
+</div>

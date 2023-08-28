@@ -42,8 +42,6 @@ namespace HospitalAPI.Model
                 throw new EntityObjectValidationFailedException("Diagnosis is emtpy");
             if (string.IsNullOrEmpty(Treatment))
                 throw new EntityObjectValidationFailedException("Treatment is emtpy");
-            if (InternalData == null)
-                throw new EntityObjectValidationFailedException("InternalData is emtpy");
             if(Patient == null)
                 throw new EntityObjectValidationFailedException("Patient is emtpy");
             if(Appointment == null)

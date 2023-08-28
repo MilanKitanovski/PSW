@@ -56,6 +56,28 @@ namespace HospitalAPI.Controllers
 
         }
 
+        [HttpGet("getAllAppointmentByPatient")]
+        public ActionResult GetAllAppointmentsByPatient()
+        {
+            try
+            {
+                User user = _jwtService.GetCurrentUser(HttpContext.User);
+
+                var result = _appointmentService.GetAllAppointmentsByPatient(user.PersonId);
+                List<ViewAppointmentByPatientDTO> list = new List<ViewAppointmentByPatientDTO>();
+                foreach (var r in result)
+                {
+                    list.Add(new ViewAppointmentByPatientDTO(r));
+                }
+                return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
         [HttpPost("searchForPatientDoctor")]
 
         public ActionResult SearchForPatientDoctor([FromBody] SearchAppointmentDTO dto)
@@ -76,7 +98,7 @@ namespace HospitalAPI.Controllers
         }
 
 
-        [HttpPut("cancleAppointment")]
+        [HttpGet("cancleAppointment/{appointmentId}")]
         public ActionResult CancleAppointment(Guid appointmentId)
         {
             try

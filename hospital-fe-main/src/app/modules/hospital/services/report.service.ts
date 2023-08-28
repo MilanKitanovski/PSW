@@ -1,31 +1,30 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {InternalDataDTO} from "../model/internalDataDTO";
 import {Observable} from "rxjs";
-import {DirectionDTO} from "../model/directionDTO";
 
 @Injectable({
   providedIn: 'root'
 })
-export class DirectionService {
-  apiHost: string = 'http://localhost:16177/api/direction';
+export class ReportService {
+
+  apiHost: string = 'http://localhost:16177/api/report';
   headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
   constructor(private http:HttpClient) { }
 
-  GetAllDirections(): Observable<any>{
+  GetAllReports(): Observable<any>{
     let headers = new HttpHeaders({
       "Content-Type" : "application/json",
       "Authorization" : "Bearer " + localStorage.getItem("token"),
     });
-    return this.http.get<any>(this.apiHost + '/getDirectionsByPatient',{headers});
+    return this.http.get<any>(this.apiHost + '/allReports',{headers});
   }
 
 
-  CreateDirection(direction: any): Observable<any>{
+  CreateReport(report: any): Observable<any>{
     let headers = new HttpHeaders({
       "Content-Type" : "application/json",
       "Authorization" : "Bearer " + localStorage.getItem("token"),
     });
-    return this.http.post<any>(this.apiHost + '/CreateDirection', direction, {headers});
+    return this.http.post<any>(this.apiHost + '/createReport', report, {headers});
   }
 }

@@ -7,13 +7,15 @@ import {ScheduleComponent} from "./modules/pages/schedule/schedule.component";
 import {ViewAppointmentsDoctorComponent} from "./modules/pages/view-appointments-doctor/view-appointments-doctor.component";
 import {CreateBlogComponent} from "./modules/pages/create-blog/create-blog.component";
 import {AllBlogsComponent} from "./modules/pages/all-blogs/all-blogs.component";
-import {compareNumbers} from "@angular/compiler-cli/src/version_helpers";
 import {CreateInternalDataComponent} from "./modules/pages/create-internal-data/create-internal-data.component";
 import {
   ViewInternalDataPatientComponent
 } from "./modules/pages/view-internal-data-patient/view-internal-data-patient.component";
 import {SpecialistScheduleComponent} from "./modules/pages/specialist-schedule/specialist-schedule.component";
 import {AllDIrectionsComponent} from "./modules/pages/all-directions/all-directions.component";
+import {ViewAppointmentsPatientComponent} from "./modules/pages/view-appointments-patient/view-appointments-patient.component";
+import {CreateDirectionComponent} from "./modules/pages/create-direction/create-direction.component";
+import {CreateReportComponent} from "./modules/pages/create-report/create-report.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -28,6 +30,9 @@ const routes: Routes = [
   { path: 'allIDatas', component: ViewInternalDataPatientComponent},
   { path: 'specialistSchedule', component: SpecialistScheduleComponent},
   { path: 'allDirections', component: AllDIrectionsComponent},
+  { path: "allAppointmentsPatient", component: ViewAppointmentsPatientComponent},
+  { path: "createDirection", component: CreateDirectionComponent},
+  { path: "createReport", component: CreateReportComponent},
 ];
 
 @NgModule({

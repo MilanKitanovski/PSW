@@ -6,6 +6,7 @@ import {SearchAppointmentResultDTO} from "../model/searchAppointmentResultDTO";
 import {ScheduleAppointmentDTO} from "../model/scheduleAppointmentDTO";
 import {ViewAppointmentByDoctorDTO} from "../model/viewAppointmentByDoctorDTO";
 import {SpecializationSearchAppointmentDTO} from "../model/specializationSearchAppointmentDTO";
+import {ViewAppointmentByPatientDTO} from "../model/ViewAppointmentByPatientDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,21 @@ export class AppointmentService {
       "Authorization" : "Bearer " + localStorage.getItem("token"),
     });
     return this.http.get<any>(this.apiHost + '/getAllPending', {headers});
+  }
+
+  CancelAppointment(id: string = ""): Observable<any>{
+    let headers = new HttpHeaders({
+      "Content-Type" : "application/json",
+      "Authorization" : "Bearer " + localStorage.getItem("token"),
+    });
+    return this.http.get<any>(this.apiHost + '/cancleAppointment/'+id, {headers});
+  }
+  GetAllAppointmentsByPatient(): Observable<ViewAppointmentByPatientDTO[]>{
+    let headers = new HttpHeaders({
+      "Content-Type" : "application/json",
+      "Authorization" : "Bearer " + localStorage.getItem("token"),
+    });
+    return this.http.get<ViewAppointmentByPatientDTO[]>(this.apiHost + '/getAllAppointmentByPatient', {headers});
   }
 
   GetAllAppointmentsByDoctor(): Observable<ViewAppointmentByDoctorDTO[]>{
