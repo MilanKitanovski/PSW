@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Core.Repository.Interfaces;
+﻿using HospitalLibrary.Core.Model;
+using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Core.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,11 @@ namespace HospitalLibrary.Core.Service
         public AdminService(IAdminRepository adminRepository) 
         {
             _adminRepository = adminRepository;
+        }
+
+        public Admin GetById(Guid id)
+        {
+           return _adminRepository.GetById(id);
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using HospitalAPI.Model;
 using HospitalLibrary.Core.DTO;
+using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Service;
 using HospitalLibrary.Core.Service.Interfaces;
+using HospitalLibrary.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,42 +14,54 @@ namespace HospitalAPI.Controllers
     [ApiController]
     public class NotificationController : ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly NotificationService _notificationService;
+        private readonly INotificationService _notificationService;
+        private readonly IAdminService _adminService;
+        private readonly IJwtService _jwtService;
 
-        public NotificationController(IUserService userService, NotificationService notificationService)
+        public NotificationController(INotificationService notificationService, IAdminService adminService, IJwtService jwtService)
         {
-            _userService = userService;
             _notificationService = notificationService;
+            _adminService = adminService;
+
         }
+
 
         [HttpPost("createNotification")]
         [Authorize(Roles = "Admin")]
         public ActionResult CreateNotification(NotificationDTO dto)
         {
-            Notification notification = new Notification(Guid.NewGuid(), dto.AdminId, dto.TextNotification);
-            return Ok(notification);
+            try
+            {
+                User user = _jwtService.GetCurrentUser(HttpContext.User);
+                Admin admin = _adminService.GetById(user.Id);
+                Notification notification = new Notification(Guid.NewGuid(), admin, dto.TextNotification);
+                return Ok(notification);
+            }
+            catch (EntityObjectValidationFailedException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
         }
 
         [HttpGet("allNotifications")]
         [AllowAnonymous]
-        public ActionResult GetAllBlogs()
+        public ActionResult GetAllNotifications()
         {
-            return Ok(_notificationService.GetAll());
-        }
-
-        [HttpDelete("deleteNotification")]
-        [Authorize(Roles = "Admin")]
-        public ActionResult DeleteNotification(Guid id)
-        {
-            var notification = _notificationService.GetById(id);
-            if (notification == null)
+            try
             {
-                return NotFound();
-            }
+                return Ok(_notificationService.GetAll());
 
-            _notificationService.Delete(notification);
-            return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
+
     }
 }

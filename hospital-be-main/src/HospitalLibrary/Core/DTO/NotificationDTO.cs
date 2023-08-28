@@ -8,7 +8,6 @@ namespace HospitalLibrary.Core.DTO
 {
     public class NotificationDTO
     {
-        public Guid? AdminId { get; set; }
         public string TextNotification { get; set; }
     }
 }

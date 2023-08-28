@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
 using HospitalLibrary.Exceptions;
+using System.Security.Claims;
 
 namespace HospitalLibrary.Core.Service
 {
@@ -34,8 +35,9 @@ namespace HospitalLibrary.Core.Service
 
             var claims = new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Email.ToString()),
-                    //new Claim(ClaimTypes.Role, user.UserType.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, user.Email.Address),
+                    new Claim(ClaimTypes.Role, user.UserType.ToString()),
+                    new Claim("role", user.UserType.ToString()),
                     new Claim("userId", user.Id.ToString())
                 };
 
@@ -48,7 +50,7 @@ namespace HospitalLibrary.Core.Service
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-
+        
         public User GetCurrentUser(IPrincipal httpContextUser)
         {
             var identity = httpContextUser.Identity as ClaimsIdentity;
@@ -58,6 +60,7 @@ namespace HospitalLibrary.Core.Service
                 var userClaims = identity.Claims;
                 string email = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value;
                 User user = _userRepository.GetUserWithEmail(email);
+            
 
                 if (user != null)
                 {

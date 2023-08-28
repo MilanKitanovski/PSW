@@ -23,6 +23,11 @@ namespace HospitalLibrary.Core.Service
             _doctorRepository = doctorRepository;
         }
 
+        public Patient GetById(Guid id)
+        {
+            return _patientRepository.GetById(id);
+        }
+
         public Patient RegisterPatient(Patient patient, Guid doctorId)
         {
             var doctor = _doctorRepository.GetById(doctorId);

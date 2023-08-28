@@ -10,7 +10,8 @@ namespace HospitalAPI.Model
     public class InternalData
     {
         public Guid Id { get; set; }
-        public Guid? UserId;
+        public Guid PatientId { get; set; }
+        public virtual Patient Patient { get; set; }    
         //validacija da je sve vece od 0
         public string BloodPressure { get; set; }
         public double BloodSugar { get; set; }
@@ -21,10 +22,10 @@ namespace HospitalAPI.Model
 
         public InternalData() { }
 
-        public InternalData(Guid id, Guid? userId, string bloodPressure, double bloodSugar, double fats, double weight, DateRange menstrual)
+        public InternalData(Guid id, Patient patient, string bloodPressure, double bloodSugar, double fats, double weight, DateRange menstrual)
         {
             Id = id;
-            UserId = userId;
+            Patient = patient;
             BloodPressure = bloodPressure;
             BloodSugar = bloodSugar;
             Fats = fats;
@@ -36,32 +37,33 @@ namespace HospitalAPI.Model
         private void Validate()
         {
             if (Id.Equals(Guid.Empty))
-                throw new EntityObjectValidationFailedException();
-            if (UserId.Equals(Guid.Empty))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Id is empty");
+            if(Patient == null)
+                throw new EntityObjectValidationFailedException("Patient is null");
             if (string.IsNullOrEmpty(BloodPressure))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Blood pressure is empty");
             if (double.IsNaN(BloodSugar))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Blood sugar is empty");
+            if(BloodSugar < 0.0)
+                throw new EntityObjectValidationFailedException("Blood sugar cant be less then 0");
             if (double.IsNaN(Fats))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Fats is empty");
+            if (Fats < 0.0)
+                throw new EntityObjectValidationFailedException("Fats cant be less then 0");
             if (double.IsNaN(Weight))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Weight is empty");
+            if (Weight < 0.0)
+                throw new EntityObjectValidationFailedException("Weight cant be less then 0");
+            MenstrualCheck();
         }
 
-        public void MenstrualCheck(Patient user, DateRange dateRange)
+        private void MenstrualCheck()
         {
-            if (user.GenderUser.Equals(Gender.Male))
+            if (Patient.GenderUser.Equals(Gender.Male)&& Menstrual!=null)
             {
                 throw new MaleCantMensruation();
             }
-
-            if (Menstrual == null)
-            {
-                throw new EntityObjectValidationFailedException();
-            }
-
-            Menstrual = dateRange;
+       
         }
     }
 }

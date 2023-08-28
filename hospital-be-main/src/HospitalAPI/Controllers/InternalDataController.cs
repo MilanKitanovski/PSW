@@ -1,12 +1,15 @@
-﻿using HospitalAPI.Enum;
+﻿using AutoMapper;
+using HospitalAPI.Enum;
 using HospitalAPI.Model;
 using HospitalLibrary.Core.DTO;
 using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Service;
 using HospitalLibrary.Core.Service.Interfaces;
+using HospitalLibrary.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 
 namespace HospitalAPI.Controllers
 {
@@ -16,46 +19,65 @@ namespace HospitalAPI.Controllers
     {
       
         private readonly IInternalDataService _internalDataService;
-        private readonly IUserService _userService;
+        private readonly IJwtService _jwtService;
+        private readonly IMapper _mapper;
+        private readonly IPatientService _patientService;
 
-        public InternalDataController(IInternalDataService internalDataService, IUserService userService)
+        public InternalDataController(IInternalDataService internalDataService, IJwtService jwtService, IMapper mapper, IPatientService patientService)
         {
             _internalDataService = internalDataService;
-            _userService = userService;
+            _jwtService = jwtService;
+            _mapper = mapper;
+            _patientService = patientService;
         }
 
 
         [HttpGet("allDatas")]
         [Authorize(Roles = "Patient")]
-        public IActionResult GetAllInternalDatas(Guid userId) 
+        public IActionResult GetAllInternalDatas() 
         {
-            //TODO current user
-            return Ok(_internalDataService.GetAllDatasForUser(userId));
-        }
-
-        [HttpPost("createData")]
-        public IActionResult CreateData(InternalDataDTO dto)
-        {
-
-            InternalData iData = new InternalData(Guid.NewGuid(), dto.UserId, dto.BloodPressure, dto.BloodSugar, dto.Fats, dto.Weight,dto.Menstrual);
-
-
-            return Ok(iData);
-        }
-
-        [HttpDelete("deleteData")]
-        public ActionResult DeleteInternalData(Guid id)
-        {
-            var iData = _internalDataService.GetById(id);
-            if (iData == null)
+            try
             {
-                return NotFound();
-            }
+                User user = _jwtService.GetCurrentUser(HttpContext.User);
+                List<InternalDataDTO> iDatas = new List<InternalDataDTO>();
 
-            _internalDataService.Delete(iData);
-            return NoContent();
+                foreach (var id in _internalDataService.GetAllDatasForUser(user.PersonId))
+                {
+                    iDatas.Add(_mapper.Map<InternalDataDTO>(id));
+
+                }
+
+                return Ok(iDatas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+           
         }
 
+        [HttpPost("patientCreateData")]
+        public IActionResult PatientCreateData(InternalDataDTO dto)
+        {
+            try
+            {
+                User user = _jwtService.GetCurrentUser(HttpContext.User);
+                Patient patient = _patientService.GetById(user.PersonId);
+                InternalData iData = new InternalData(Guid.NewGuid(), patient, dto.BloodPressure, dto.BloodSugar, dto.Fats, dto.Weight, dto.Menstrual);
+                _internalDataService.Create(iData);
+                return Ok(new { message = "Internal data created" });
+
+            }
+            catch (EntityObjectValidationFailedException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+           
+        }
 
 
 

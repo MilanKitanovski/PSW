@@ -24,9 +24,12 @@ namespace HospitalAppTests.UnitiTest
             DateTime startDate = new DateTime(now.Year, now.Month, now.Day + 1, 8, 30, 0);
             DateTime endDate = new DateTime(now.Year, now.Month, now.Day + 3, 8, 30, 0);
 
-            var appointment = new Appointment(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new DateRange(startDate, endDate), Priority.DoctorPriority, Status.Pending);
+            Doctor doctor = new Doctor(Guid.NewGuid(), "Doc", "Doc", "Doccc", Specialization.Opsta_praksa);
+            Patient patient = new Patient(Guid.NewGuid(), "Milana", "Kitanovski", "0606060", Gender.Female);
+
+            var appointment = new Appointment(Guid.NewGuid(), doctor, patient, new DateRange(startDate, endDate), Status.Pending);
             appointment.CheckDateRange().ShouldBeTrue();
-            
+
         }
 
         [Fact]
@@ -36,8 +39,11 @@ namespace HospitalAppTests.UnitiTest
             DateTime startDate = new DateTime(now.Year, now.Month, now.Day, 8, 30, 0);
             DateTime endDate = new DateTime(now.Year, now.Month, now.Day + 3, 8, 30, 0);
 
-            var appointment = new Appointment(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new DateRange(startDate, endDate), Priority.DoctorPriority, Status.Pending);
-            appointment.CheckDateRange().ShouldBeFalse(); 
+            Doctor doctor = new Doctor(Guid.NewGuid(), "Doc", "Doc", "Doccc", Specialization.Opsta_praksa);
+            Patient patient = new Patient(Guid.NewGuid(), "Milana", "Kitanovski", "0606060", Gender.Female);
+
+            var appointment = new Appointment(Guid.NewGuid(), doctor, patient, new DateRange(startDate, endDate), Status.Pending);
+            appointment.CheckDateRange().ShouldBeFalse();
         }
 
 

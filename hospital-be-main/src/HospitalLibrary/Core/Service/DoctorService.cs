@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Core.Model;
+﻿using HospitalLibrary.Core.Enum;
+using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Core.Service.Interfaces;
 using System;
@@ -43,5 +44,14 @@ namespace HospitalLibrary.Core.Service
             _doctorRepository.Update(doctor);
         }
 
+        public List<Doctor> getAllDoctor_Opste_Prakse() 
+        {
+            return _doctorRepository.getAllDoctor_Opste_Prakse();
+        }
+
+        public List<Doctor> getAllDoctorsBySpetialization(Specialization specialization)
+        {
+            return _doctorRepository.getAllDoctorsBySpetialization(specialization);
+        }
     }
 }

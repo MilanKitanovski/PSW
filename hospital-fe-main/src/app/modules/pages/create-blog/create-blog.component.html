@@ -1,0 +1,19 @@
+<form [formGroup]="blogForm">
+  <div>
+    <mat-form-field class="example-full-width">
+      <label>Write a blog</label>
+      <textarea matInput placeholder="Write a blog" id="blogText" formControlName="blogText"></textarea>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-radio-group formControlName="favoriteSeason">
+      <mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season">
+        {{ season }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div class="form-group">
+    <button mat-button mat-raised-button color="accent" (click)="createBlog()">Register</button>
+  </div>
+</form>

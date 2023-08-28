@@ -13,5 +13,7 @@ namespace HospitalLibrary.Core.Service.Interfaces
         void Delete(Report report);
         IEnumerable<Report> GetAllReportsFromUser(Guid id);
         Report GetById(Guid id);
+
+        void Create(Report report);
     }
 }

@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Core.Repository.Interfaces;
+﻿using HospitalLibrary.Core.Model;
+using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Settings;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,11 @@ namespace HospitalLibrary.Core.Repository
         public AdminRepository(HospitalDbContext context)
         {
             _context = context;
+        }
+
+        public Admin GetById(Guid id)
+        {
+            return _context.Admins.Find(id);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace HospitalLibrary.Core.Service.Interfaces
 {
     public interface IDirectionService
     {
-        IEnumerable<Direction> GetDirectionsByPatient(Guid id);
+        List<Direction> GetDirectionsByPatient(Guid id);
         IEnumerable<Direction> GetAll();
         Direction GetById(Guid id);
         void Create(Direction direction);

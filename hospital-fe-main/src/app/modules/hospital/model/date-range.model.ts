@@ -1,11 +1,9 @@
 export class DateRange {
-  startTime!: Date;
-  endTIme! : Date;
+  startTime: Date;
+  endTime : Date;
 
-  public constructor(obj?: any) {
-    if (obj) {
-      this.startTime = obj.startTime;
-      this.endTIme = obj.endTIme;
-    }
+  public constructor(startTime: Date, endTime: Date ){
+      this.startTime = startTime;
+      this.endTime = endTime;
   }
 }

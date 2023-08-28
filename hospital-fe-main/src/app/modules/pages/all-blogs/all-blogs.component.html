@@ -1,0 +1,9 @@
+<div class="scrollable-container">
+  <mat-card *ngFor="let blog of blogs" class="blog-card">
+    <mat-card-title>{{ blog.doctor.name }}</mat-card-title>
+    <mat-card-subtitle>{{ convert(blog.theme)}}</mat-card-subtitle>
+    <mat-card-content>
+      {{ blog.textBlog }}
+    </mat-card-content>
+  </mat-card>
+</div>

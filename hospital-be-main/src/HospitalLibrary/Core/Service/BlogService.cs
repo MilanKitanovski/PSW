@@ -24,13 +24,9 @@ namespace HospitalLibrary.Core.Service
         }
 
 
-        public Blog CreateBlog(Guid doctorId, string blogText)
+        public void Create(Blog blog)
         {
-            /*   User user = _userRepository.GetById(doctorId); //uzmi trenutnog korisnika (doktora)
-
-               Blog blog = _blogRepository.Create(doctorId, blogText);
-               return blog;*/
-            return null;
+            _blogRepository.Create(blog);
         }
 
         public IEnumerable<Blog> GetAll()

@@ -37,7 +37,7 @@ namespace HospitalLibrary.Core.Repository
 
         public IEnumerable<Report> GetAllReportsFromUser(Guid userId)
         {
-            return _context.Reports.Where(u => u.UserId == userId);
+            return _context.Reports.Where(u => u.PatientId == userId);
         }
 
     }

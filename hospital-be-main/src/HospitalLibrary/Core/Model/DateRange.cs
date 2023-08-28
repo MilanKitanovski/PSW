@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HospitalLibrary.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,14 @@ namespace HospitalLibrary.Core.Model
         {
             this.StartTime = startTime;
             this.EndTime = endTime;
+            Validate();
+        }
+
+        private void Validate()
+        {
+            if(this.StartTime > this.EndTime)
+                throw new ValueObjectValidationFailedException("Start date shoud be end date");
+
         }
 
         public Boolean OverlapsWith(DateRange dateRange)

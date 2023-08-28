@@ -48,7 +48,7 @@ namespace HospitalLibrary.Core.Service
             _internalDataRepository.Update(iData);
         }
 
-        public IEnumerable<InternalData> GetAllDatasForUser(Guid userId)
+        public List<InternalData> GetAllDatasForUser(Guid userId)
         {
             return _internalDataRepository.GetAllDatasForUser(userId);
         }

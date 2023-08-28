@@ -17,24 +17,20 @@ namespace HospitalLibrary.Core.Model
             base(id, name, surname, phoneNumber )
         {
             GenderUser = genderUser;
-            Validate();
+    
         }
 
-        private void Validate()
-        {
-            if (GenderUser == null)
-                throw new EntityObjectValidationFailedException();
-        }
 
-        public Doctor ChosenDoctor { get; set; }
+
         public Guid ChosenDoctorId { get; private set; }
+        public virtual Doctor ChosenDoctor { get; set; }
 
         public void AppointTheChosenDoctor(Doctor doctor)
         {
             if(doctor == null)
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Doctor is empty");
             if (doctor.Id == Guid.Empty)
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Doctor Id is empty");
 
             ChosenDoctor = doctor;
             ChosenDoctorId = doctor.Id;

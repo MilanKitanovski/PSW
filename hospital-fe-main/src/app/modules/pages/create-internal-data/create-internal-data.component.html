@@ -1,0 +1,41 @@
+<div class="container internalDataForm">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <form [formGroup]="internalDataForm">
+        <div class="form-group">
+          <label for="bloodPressure"></label>
+          <input type="text" id="bloodPressure" formControlName="bloodPressure" class="form-control" placeholder="Blood Pressure">
+        </div>
+        <div class="form-group">
+          <label for="bloodSugar"></label>
+          <input type="number" id="bloodSugar" formControlName="bloodSugar" class="form-control" placeholder="Blood Sugar">
+        </div>
+        <div class="form-group">
+          <label for="fats"></label>
+          <input type="number" id="fats" formControlName="fats" class="form-control" placeholder="Fats">
+        </div>
+        <div class="form-group">
+          <label for="weight"></label>
+          <input type="number" id="weight" formControlName="weight" class="form-control" placeholder="Weight">
+        </div>
+
+        <mat-form-field class="example-form-field">
+          <mat-label>First campaign</mat-label>
+          <mat-date-range-input
+            [formGroup]="campaignOne"
+            [rangePicker]="campaignOnePicker"
+          >
+            <input matStartDate placeholder="Start date" formControlName="start">
+            <input matEndDate placeholder="End date" formControlName="end">
+          </mat-date-range-input>
+          <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="campaignOnePicker"></mat-datepicker-toggle>
+          <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+        </mat-form-field>
+        <div class="form-group">
+          <button mat-button mat-raised-button color="accent" (click)="submit()">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

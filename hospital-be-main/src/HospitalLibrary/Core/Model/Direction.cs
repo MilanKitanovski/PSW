@@ -13,27 +13,33 @@ namespace HospitalLibrary.Core.Model
     public class Direction
     {
         public Guid Id { get; set; }
-        public Guid? PatientId { get; set; }
+        public Guid PatientId { get; set; }
+        public virtual Patient Patient { get; set; }
         public Specialization Specialization { get; set; }
         public bool IsActive { get; set; }
 
         public Direction() { }
 
-        public Direction(Guid id, Guid? patientId, Specialization specialization, bool isActive)
+        public Direction(Guid id, Patient patient, Specialization specialization)
         {
             Id = id;
-            PatientId = patientId;
+            Patient = patient;
             Specialization = specialization;
-            IsActive = isActive;
+            IsActive = true;
             Validate();
+        }
+
+        public void UsedToScheduleAppointment()
+        {
+            IsActive = false;
         }
 
         private void Validate()
         {
             if (Id.Equals(Guid.Empty))
-                throw new EntityObjectValidationFailedException();
-            if (PatientId.Equals(Guid.Empty))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Id is empty");
+            if (Patient == null)
+                throw new EntityObjectValidationFailedException("Patient is null");
         }
     }
 }

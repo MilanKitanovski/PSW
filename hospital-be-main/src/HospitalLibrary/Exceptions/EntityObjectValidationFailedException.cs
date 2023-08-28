@@ -8,8 +8,7 @@ namespace HospitalLibrary.Exceptions
 {
     public class EntityObjectValidationFailedException : Exception
     {
-        public EntityObjectValidationFailedException()
-        {
-        }
+        public EntityObjectValidationFailedException(string message) : base(message) { }
+
     }
 }

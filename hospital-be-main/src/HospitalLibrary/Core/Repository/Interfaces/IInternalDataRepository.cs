@@ -14,6 +14,6 @@ namespace HospitalLibrary.Core.Repository.Interfaces
         void Create(InternalData iData);
         void Update(InternalData iData);
         void Delete(InternalData iData);
-        IEnumerable<InternalData> GetAllDatasForUser(Guid userId);
+        List<InternalData> GetAllDatasForUser(Guid userId);
     }
 }

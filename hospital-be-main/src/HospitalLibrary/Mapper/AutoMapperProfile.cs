@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HospitalAPI.Model;
 using HospitalLibrary.Core.DTO;
 using HospitalLibrary.Core.Model;
 using System;
@@ -14,6 +15,13 @@ namespace HospitalLibrary.Mapper
         public AutoMapperProfile()
         {
             CreateMap<ScheduleAppointmentDTO, Appointment>();
+            CreateMap<DirectionDTO, Direction>();
+            CreateMap<Direction, DirectionDTO>();
+            CreateMap<ReportDTO, Report>();
+            CreateMap<InternalDataDTO, InternalData>();
+            CreateMap<InternalData, InternalDataDTO > ();
+            CreateMap<BlogDTO, Blog>();
+            CreateMap<Blog, BlogDTO>();
         }
     }
 }

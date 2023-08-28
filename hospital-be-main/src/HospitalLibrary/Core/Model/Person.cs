@@ -21,15 +21,18 @@ namespace HospitalLibrary.Core.Model
             Name = name;
             Surname = surname;
             PhoneNumber = phoneNumber;
+            Validate();
         }
         private void Validate()
         {
+            if (Id.Equals(Guid.Empty))
+                throw new EntityObjectValidationFailedException("Id is empty");
             if (string.IsNullOrEmpty(Name))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Name is empty");
             if (string.IsNullOrEmpty(Surname))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Surname is empty");
             if (string.IsNullOrEmpty(PhoneNumber))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("PhoneNumber is empty");
         }
     }
 }

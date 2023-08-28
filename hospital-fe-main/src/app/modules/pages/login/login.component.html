@@ -1,1 +1,23 @@
+<div class="container loginForm">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <form [formGroup]="loginForm">
+        <div class="form-group">
+          <label for="email"></label>
+          <input type="email" id="email" formControlName="email" class="form-control" placeholder="email">
+        </div>
+        <div class="form-group">
+          <label for="password"></label>
+          <input type="password" id="password" formControlName="password" class="form-control" placeholder="password">
+        </div>
+        <div class="form-group">
+          <button mat-button mat-raised-button color="accent" (click)="login()">Log In</button>
+        </div>
+        <div class="form-group">
+          <button mat-button mat-raised-button color="warn" (click)="registration()">Registration</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 

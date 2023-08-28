@@ -1,45 +1,49 @@
 <div class="container registerForm">
   <div class="row">
     <div class="col-md-6 offset-md-3">
-      <form>
+      <form [formGroup]="registerForm">
           <div class="form-group">
             <label for="name"></label>
-            <input type="text" class="form-control" placeholder="name">
+            <input type="text" id="name" formControlName="name" class="form-control" placeholder="name">
           </div>
           <div class="form-group">
             <label for="surname"></label>
-            <input type="text" class="form-control" placeholder="surname">
+            <input type="text" id="surname" formControlName="surname" class="form-control" placeholder="surname">
           </div>
           <div class="form-group">
             <label for="email"></label>
-            <input type="email" class="form-control" placeholder="email">
+            <input type="email" id="email" formControlName="email" class="form-control" placeholder="email">
           </div>
           <div class="form-group">
             <label for="password"></label>
-            <input type="password" class="form-control" placeholder="password">
+            <input type="password" id="password" formControlName="password" class="form-control" placeholder="password">
           </div>
           <div class="form-group">
             <label for="phoneNumber"></label>
-            <input type="phoneNumber" class="form-control" placeholder="phoneNumber">
+            <input type="phoneNumber" id="phoneNumber" formControlName="phoneNumber" class="form-control" placeholder="phoneNumber">
           </div>
           <div class="form-group">
             <mat-form-field>
               <mat-label for="doctor"></mat-label>
-              <mat-select>
-                <mat-option>Mileeeee</mat-option>
-                <mat-option>Mileeeee</mat-option>
+              <mat-select formControlName="doctorId">
+                <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">
+                  Dr {{doctor.surname}} {{doctor.name}}
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
           <div class="form-group">
-            <mat-radio-group aria-label="Select one option">
-              <mat-radio-button value="1">Male</mat-radio-button>
-              <mat-radio-button value="2">Female</mat-radio-button>
+            <mat-radio-group aria-label="Select one option" formControlName="gender">
+              <mat-radio-button [value]="0">Male</mat-radio-button>
+              <mat-radio-button [value]="1">Female</mat-radio-button>
             </mat-radio-group>
           </div>
           <div class="form-group">
-            <button mat-button mat-raised-button color="accent">Register</button>
+            <button mat-button mat-raised-button color="accent" (click)="register()">Register</button>
           </div>
+        <div class="form-group">
+          <button mat-button mat-raised-button color="warn" (click)="login()">Login</button>
+        </div>
       </form>
     </div>
   </div>

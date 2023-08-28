@@ -9,11 +9,12 @@ namespace HospitalLibrary.Core.DTO
 {
     public class ReportDTO
     {
-        public Guid? DoctorId { get; set; }
+        public Guid DoctorId { get; set; }
 
-        public Guid? UserId { get; set; }
+        public Guid PatientId { get; set; }
         public string Diagnosis { get; set; }
         public string Treatment { get; set; }
-        public InternalData InternalData { get; set; }
+        public InternalDataDTO InternalData { get; set; }
+        public Guid AppointmentId { get; set; }
     }
 }

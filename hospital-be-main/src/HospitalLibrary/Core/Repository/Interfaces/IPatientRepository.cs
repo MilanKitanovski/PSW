@@ -1,5 +1,6 @@
 ﻿using HospitalAPI.Model;
 using HospitalLibrary.Core.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace HospitalLibrary.Core.Repository.Interfaces
     public interface IPatientRepository
     {
         void Create(Patient patient);
-        //Patient GetByEmail(string email);
+        public Patient GetById(Guid id);
     }
 }

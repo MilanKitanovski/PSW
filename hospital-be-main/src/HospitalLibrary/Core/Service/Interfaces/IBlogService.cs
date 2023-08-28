@@ -10,7 +10,8 @@ namespace HospitalLibrary.Core.Service.Interfaces
 {
     public interface IBlogService
     {
-        Blog CreateBlog(Guid doctorId, string blogText);
+
+        void Create(Blog blog);
         IEnumerable<Blog> GetAll();
         Blog GetById(Guid id);
         void Delete(Blog blog);

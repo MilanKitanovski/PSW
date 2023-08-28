@@ -1,0 +1,37 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 center-table">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="bloodPressure">
+    <th mat-header-cell *matHeaderCellDef> Blood Pressure</th>
+    <td mat-cell *matCellDef="let element"> {{element.bloodPressure}}</td>
+  </ng-container>
+
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="bloodSugar">
+    <th mat-header-cell *matHeaderCellDef> Blood Sugar </th>
+    <td mat-cell *matCellDef="let element"> {{element.bloodSugar}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fats">
+    <th mat-header-cell *matHeaderCellDef> Fats</th>
+    <td mat-cell *matCellDef="let element"> {{element.fats}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="weight">
+    <th mat-header-cell *matHeaderCellDef> Weight</th>
+    <td mat-cell *matCellDef="let element"> {{element.weight}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="menstrual">
+    <th mat-header-cell *matHeaderCellDef> menstrual</th>
+    <td mat-cell *matCellDef="let element"> {{element.date.startTime}} - {{element.date.endTime}}</td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

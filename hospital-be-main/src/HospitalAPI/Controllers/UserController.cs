@@ -22,6 +22,7 @@ using System.Net;
 using HospitalLibrary.Core.Service.Interfaces;
 using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Core.Enum;
+using System.Collections.Generic;
 
 namespace HospitalAPI.Controllers
 {
@@ -32,29 +33,15 @@ namespace HospitalAPI.Controllers
         private readonly IConfiguration _configuration;
         private readonly IPatientService _petientService;
         private readonly IUserService _userService;
-        public UserController( IConfiguration configuration, IPatientService petientService, IUserService userService)
+        private readonly IDoctorService _doctorService;
+        public UserController( IConfiguration configuration, IPatientService petientService, IUserService userService, IDoctorService doctorService)
         {
             _configuration = configuration;
             _petientService = petientService;
             _userService = userService;
+            _doctorService = doctorService;
         }
 
-        /* [HttpPost("register")]
-         [AllowAnonymous]
-         public async Task<IActionResult> Register(RegisterDTO dto)
-         {
-             if (dto == null)
-             {
-                 return BadRequest("Dto is null");
-             }
-
-             bool emailExist = _userService.isEmailExist(dto.Email);
-             if (emailExist)
-                 return null;
-
-             User registeredUser = _userService.Register(dto);
-             return Ok(registeredUser);
-         } */
 
         [HttpPost("register")]
         [AllowAnonymous]
@@ -62,20 +49,18 @@ namespace HospitalAPI.Controllers
         {
             try
             {
-             
+                User user = new User(Guid.NewGuid(), Guid.NewGuid(), UserType.Patient, dto.Email, dto.Password);
+                _userService.Create(user);
 
-                Patient patient = new Patient(Guid.NewGuid(), dto.Name, dto.Surname, /*new Email(dto.Email),dto.Password, */dto.PhoneNumber, dto.Gender);
+                Patient patient = new Patient(user.PersonId, dto.Name, dto.Surname, dto.PhoneNumber, dto.Gender);
                 _petientService.RegisterPatient(patient, dto.DoctorId);
 
-                return Ok();  
+                return Ok(new { message = "User registered" });
             }
-            catch (NotFoundException)
+            
+            catch (Exception e)
             {
-                return NotFound();
-            }
-            catch (ValueObjectValidationFailedException exception)
-            {
-                return BadRequest("Value object error");
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -90,11 +75,11 @@ namespace HospitalAPI.Controllers
             }
             catch (NotFoundException)
             {
-                return NotFound("User not found");
+                return NotFound("Bad credentials");
             }
             catch (BadPasswordException)
             {
-                return Unauthorized("Bad password");
+                return Unauthorized("Bad credentials");
             }
             catch (AccountNotActivatedException)
             {
@@ -110,38 +95,52 @@ namespace HospitalAPI.Controllers
             }
             catch (ValueObjectValidationFailedException)
             {
-                return Unauthorized("Bad password");
+                return Unauthorized("Bad credentials");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Unknown error");
+                return BadRequest(new { message = e.Message });
             }
         }
 
 
-        [HttpGet("allDoctors")]
-        public ActionResult GetAllDoctors()
-        {
-            return Ok(/*_userService.GetAllDoctors()*/);
-        }
+       
 
         [HttpPut("blockUser")]
         public ActionResult BlockUser(Guid id)
         {
-            //TODO Provera ako je otkazao 3 pregleda i obavestenje na mail-u
-            User user = _userService.GetById(id);
-            user.Block();
-            return Ok(user);
+            try
+            {
+                //TODO Provera ako je otkazao 3 pregleda i obavestenje na mail-u
+                User user = _userService.GetById(id);
+                user.Block();
+                return Ok(user);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        
         }
 
         [HttpPut("unblockUser")]
         public ActionResult UnlockUser(Guid id)
         {
-            //TODO Provera ako je otkazao 3 pregleda i obavestenje na mail-u
-            User user = _userService.GetById(id);
-            user.Unblock();
-            return Ok(user);
+            try
+            {
+                //TODO Provera ako je otkazao 3 pregleda i obavestenje na mail-u
+                User user = _userService.GetById(id);
+                user.Unblock();
+                return Ok(user);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+
         }
+
+       
 
     }
 }

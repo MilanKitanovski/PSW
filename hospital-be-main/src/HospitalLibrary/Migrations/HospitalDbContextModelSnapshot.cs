@@ -16,7 +16,7 @@ namespace HospitalLibrary.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.10")
+                .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("HospitalAPI.Model.Blog", b =>
@@ -25,7 +25,7 @@ namespace HospitalLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("DoctorId")
+                    b.Property<Guid>("DoctorId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("TextBlog")
@@ -35,6 +35,8 @@ namespace HospitalLibrary.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
 
                     b.ToTable("Blogs");
                 });
@@ -54,10 +56,15 @@ namespace HospitalLibrary.Migrations
                     b.Property<double>("Fats")
                         .HasColumnType("double precision");
 
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uuid");
+
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("InternalDatas");
                 });
@@ -85,22 +92,27 @@ namespace HospitalLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("AppointmentId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Diagnosis")
                         .HasColumnType("text");
 
                     b.Property<Guid?>("DoctorId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("InternalDataId")
+                    b.Property<Guid>("InternalDataId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("PatientId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Treatment")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
 
                     b.HasIndex("InternalDataId");
 
@@ -116,7 +128,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("PersonId")
+                    b.Property<Guid>("PersonId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("UserType")
@@ -156,19 +168,20 @@ namespace HospitalLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("DoctorId")
+                    b.Property<Guid>("DoctorId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("PatientId")
+                    b.Property<Guid>("PatientId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("integer");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
                 });
@@ -182,7 +195,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("PatientId")
+                    b.Property<Guid>("PatientId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Specialization")
@@ -283,8 +296,25 @@ namespace HospitalLibrary.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HospitalAPI.Model.Blog", b =>
+                {
+                    b.HasOne("HospitalLibrary.Core.Model.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+                });
+
             modelBuilder.Entity("HospitalAPI.Model.InternalData", b =>
                 {
+                    b.HasOne("HospitalLibrary.Core.Model.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("HospitalLibrary.Core.Model.DateRange", "Menstrual", b1 =>
                         {
                             b1.Property<Guid>("InternalDataId")
@@ -307,13 +337,25 @@ namespace HospitalLibrary.Migrations
                         });
 
                     b.Navigation("Menstrual");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("HospitalAPI.Model.Report", b =>
                 {
+                    b.HasOne("HospitalLibrary.Core.Model.Appointment", "Appointment")
+                        .WithMany()
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HospitalAPI.Model.InternalData", "InternalData")
                         .WithMany()
-                        .HasForeignKey("InternalDataId");
+                        .HasForeignKey("InternalDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
 
                     b.Navigation("InternalData");
                 });
@@ -342,6 +384,18 @@ namespace HospitalLibrary.Migrations
 
             modelBuilder.Entity("HospitalLibrary.Core.Model.Appointment", b =>
                 {
+                    b.HasOne("HospitalLibrary.Core.Model.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HospitalLibrary.Core.Model.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("HospitalLibrary.Core.Model.DateRange", "Range", b1 =>
                         {
                             b1.Property<Guid>("AppointmentId")
@@ -362,6 +416,10 @@ namespace HospitalLibrary.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AppointmentId");
                         });
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
 
                     b.Navigation("Range");
                 });

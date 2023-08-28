@@ -58,6 +58,11 @@ namespace HospitalLibrary.Core.Repository
             return _context.Appointments.Where(a => a.PatientId == patientId && a.Status == Status.Canceled);
         }
 
+        public List<Appointment> GetAllAppointmentsByDoctor(Guid doctorId)
+        {
+            return _context.Appointments.Where(a => a.DoctorId == doctorId).ToList();
+        }
+
         public void Update(Appointment appointment)
         {
             _context.Entry(appointment).State = EntityState.Modified;
@@ -71,5 +76,7 @@ namespace HospitalLibrary.Core.Repository
                 throw;
             }
         }
+
+
     }
 }

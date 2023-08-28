@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using HospitalLibrary.Core.Service.Interfaces;
+using HospitalLibrary.Exceptions;
+using HospitalLibrary.Core.Model;
 
 namespace HospitalAPI.Controllers
 {
@@ -13,43 +15,54 @@ namespace HospitalAPI.Controllers
     [ApiController]
     public class BlogController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly IBlogService _blogService;
+        private readonly IJwtService _jwtService;
+        private readonly IDoctorService _doctorService;
 
-        public BlogController(IUserService userService, IBlogService blogService)
+        public BlogController(IBlogService blogService, IJwtService jwtService, IDoctorService doctorService)
         {
-            _userService = userService;
             _blogService = blogService;
+            _jwtService = jwtService;
+            _doctorService = doctorService;
         }
+
+
 
         [HttpPost("createBlog")]
         [Authorize(Roles = "Doctor")]
-        //Stavi da doktor to moze da radi
         public ActionResult CreateBlog([FromBody] BlogDTO dto)
         {
-            //uzmi trenutnog doktora
-            Blog blog = new Blog(Guid.NewGuid(), dto.TextBlog, dto.DoctorId, dto.Theme); 
+            try
+            {
+                User user = _jwtService.GetCurrentUser(HttpContext.User);
+                Doctor doctor = _doctorService.GetById(user.PersonId);
+                Blog blog = new Blog(Guid.NewGuid(), dto.TextBlog, doctor, dto.Theme);
+                _blogService.Create(blog);
+                return Ok(blog);
+            }
+            catch (EntityObjectValidationFailedException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
 
-            return Ok(blog);
         }
 
         [HttpGet("allBlogs")]
         public ActionResult GetAllBlogs()
         {
-            return Ok(_blogService.GetAll());
-        }
-
-        [HttpDelete("deleteBlog")]
-        public ActionResult DeleteBlog(Guid id)
-        {
-            var blog = _blogService.GetById(id);
-            if (blog == null)
+            try
             {
-                return NotFound();
-            }
+                return Ok(_blogService.GetAll());
 
-            _blogService.Delete(blog);
-            return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
     }

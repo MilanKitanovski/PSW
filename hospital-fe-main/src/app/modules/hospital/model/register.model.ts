@@ -11,15 +11,14 @@ export class Register {
   doctorId!: number;
   gender!: Gender;
 
-  public constructor(obj?: any) {
-    if (obj) {
-      this.name = obj.name;
-      this.surname = obj.surname;
-      this.email = obj.email;
-      this.password = obj.password;
-      this.phoneNumber = obj.phoneNumber;
-      this.doctorId = obj.doctorId;
-      this.gender = obj.gender;
-    }
+  public constructor(name : string = '', surname:string = '', email:string = '', password:string='', phoneNumber:string = '', doctorId:number = 0) {
+
+      this.name = name;
+      this.surname = surname;
+      this.email = email;
+      this.password = password;
+      this.phoneNumber = phoneNumber;
+      this.doctorId = doctorId;
+
   }
 }

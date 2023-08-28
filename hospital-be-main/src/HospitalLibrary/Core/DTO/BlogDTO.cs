@@ -9,7 +9,6 @@ namespace HospitalLibrary.Core.DTO
 {
     public class BlogDTO
     {
-        public Guid? DoctorId { get; set; }
         public string TextBlog { get; set; }
         public BlogTheme Theme { get; set; }
     }

@@ -18,6 +18,11 @@ namespace HospitalLibrary.Core.Service
             _reportRepository = reportRepository;
         }
 
+        public void Create(Report report)
+        {
+            _reportRepository.Create(report);
+        }
+
         public void Delete(Report report)
         {
             _reportRepository.Delete(report);

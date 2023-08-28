@@ -11,7 +11,6 @@ namespace HospitalAPI.DTO
         public String Email { get; set; }
         public String Password { get; set; }
         public String PhoneNumber { get; set; }
-        public UserType UserType { get; set; }
         public Guid DoctorId { get; set; }
         public Gender Gender { get; set; }
 

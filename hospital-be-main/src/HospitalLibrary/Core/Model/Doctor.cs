@@ -18,5 +18,10 @@ namespace HospitalLibrary.Core.Model
         {
             Specialization = specialization;
         }
+
+        internal string GetFullName()
+        {
+            return Name + " - " + Surname;
+        }
     }
 }

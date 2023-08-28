@@ -54,9 +54,10 @@ namespace HospitalLibrary.Core.Repository
                 throw;
             }
         }
-        public IEnumerable<Direction> GetDirectionsByPatient(Guid id)
+        public List<Direction> GetDirectionsByPatient(Guid id)
         {
-            return _context.Directions.Where(x => x.PatientId == id);
+            return _context.Directions.Where(x => x.PatientId == id && x.IsActive == true).ToList();
         }
+
     }
 }

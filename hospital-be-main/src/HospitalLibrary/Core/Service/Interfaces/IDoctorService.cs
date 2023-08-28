@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Core.Model;
+﻿using HospitalLibrary.Core.Enum;
+using HospitalLibrary.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace HospitalLibrary.Core.Service.Interfaces
         void Create(Doctor doctor);
         void Update(Doctor doctor);
         void Delete(Doctor doctor);
+        List<Doctor> getAllDoctor_Opste_Prakse();
+        List<Doctor> getAllDoctorsBySpetialization(Specialization specialization);
     }
 }

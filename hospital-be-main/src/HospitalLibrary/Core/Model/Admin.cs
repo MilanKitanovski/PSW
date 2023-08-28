@@ -11,11 +11,10 @@ namespace HospitalLibrary.Core.Model
 {
     public class Admin : Person
     {
-        public string MJAUUU { get; set; }
-        public Admin(Guid id, string name, string surname, string phoneNumber, string mJAUUU) :
+        public Admin(Guid id, string name, string surname, string phoneNumber) :
           base(id, name, surname, phoneNumber)
         {
-            MJAUUU = mJAUUU;
+
         }
     }
 }

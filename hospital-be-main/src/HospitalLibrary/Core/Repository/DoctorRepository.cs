@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HospitalLibrary.Core.Enum;
 using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Settings;
@@ -53,6 +54,16 @@ namespace HospitalLibrary.Core.Repository
             {
                 throw;
             }
+        }
+
+        public List<Doctor> getAllDoctor_Opste_Prakse()
+        {
+            return GetAll().Where(d => d.Specialization.Equals(Specialization.Opsta_praksa)).ToList();
+        }
+
+        public List<Doctor> getAllDoctorsBySpetialization(Specialization specialization)
+        {
+            return GetAll().Where(s => s.Specialization == specialization).ToList();
         }
     }
 }

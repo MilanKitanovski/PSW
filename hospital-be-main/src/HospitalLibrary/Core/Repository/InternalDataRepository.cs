@@ -2,6 +2,7 @@
 using HospitalAPI.Model;
 using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Settings;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -56,9 +57,9 @@ namespace HospitalLibrary.Core.Repository
             }
         }
 
-        public IEnumerable<InternalData> GetAllDatasForUser(Guid userId)
+        public List<InternalData> GetAllDatasForUser(Guid userId)
         {
-            return _context.InternalDatas.Where(u => u.UserId == userId);
+            return _context.InternalDatas.Where(u => u.PatientId == userId).ToList();
 
         }
 

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using HospitalLibrary.Core.Model;
 using System.Numerics;
 using HospitalLibrary.Core.Enum;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalAPI.Model
 {
@@ -14,8 +15,10 @@ namespace HospitalAPI.Model
     {
         public Guid Id { get; set; }
 
-        public Guid? PersonId { get; set; }
+        public Guid PersonId { get; set; }
         public UserType UserType { get; set; }
+
+
         public Email Email { get;  set; }
    
         public string Password { get;  set; }
@@ -24,12 +27,12 @@ namespace HospitalAPI.Model
         public bool IsBlock = false;  
 
         public User() { }
-        public User(Guid id, Guid? personId, UserType userType, Email email, string password)
+        public User(Guid id, Guid personId, UserType userType, string email, string password)
         {
             Id = id;
             PersonId = personId;
             UserType = userType;
-            Email = email;  
+            Email = new Email(email);  
             Password = password;
             IsBlock = false;
             Validate();
@@ -38,11 +41,11 @@ namespace HospitalAPI.Model
         private void Validate()
         {
             if (Id.Equals(Guid.Empty))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Id is emtpy");
             if (Email == null)
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Email is emtpy");
             if (string.IsNullOrEmpty(Password))
-                throw new EntityObjectValidationFailedException();
+                throw new EntityObjectValidationFailedException("Password is emtpy");
         }
 
 

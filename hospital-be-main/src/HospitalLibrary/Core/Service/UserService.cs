@@ -60,10 +60,7 @@ namespace HospitalLibrary.Core.Service
                 throw new NotFoundException();
             }
 
-            if(!user.Email.Equals(email))
-            {
-                throw new BadPasswordException();
-            }
+          
 
             if (!user.Password.Equals(password))
             {

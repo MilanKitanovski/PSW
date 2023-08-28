@@ -44,7 +44,7 @@ namespace HospitalLibrary.Core.Service
             _directionRepository.Update(direction);
         }
 
-        public IEnumerable<Direction> GetDirectionsByPatient(Guid id)
+        public List<Direction> GetDirectionsByPatient(Guid id)
         {
             return _directionRepository.GetDirectionsByPatient(id);
         }

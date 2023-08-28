@@ -19,6 +19,7 @@ namespace HospitalLibrary.Core.Model
                 email.Property(prop => prop.Address)
                     .HasColumnName("EmailAddress");
             });
+            //builder.HasIndex(u => u.Email.Address).IsUnique();
         }
     }
 }

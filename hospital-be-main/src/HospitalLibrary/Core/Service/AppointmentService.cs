@@ -16,12 +16,22 @@ namespace HospitalLibrary.Core.Service
         private readonly IAppointmentRepository _appointmentRepository;
         private TimeSpan AppointmentDuration;
         private readonly IDoctorRepository _doctorRepository;
-        public AppointmentService(IAppointmentRepository appointmentRepository, IDoctorRepository doctorRepository)
+        private readonly IPatientRepository _petientRepository;
+        public AppointmentService(IAppointmentRepository appointmentRepository, IDoctorRepository doctorRepository, IPatientRepository patient)
         {
             _appointmentRepository = appointmentRepository;
             AppointmentDuration = new TimeSpan(0,30,0);
             _doctorRepository = doctorRepository;
+            _petientRepository = patient;
         }
+
+        public void FinishAppointment(Guid appointmentId)
+        {
+            var app = _appointmentRepository.GetById(appointmentId);
+            app.FinishAppointment();
+            Update(app);
+        }
+
 
         public void Create(Appointment appointment)
         {
@@ -76,19 +86,20 @@ namespace HospitalLibrary.Core.Service
             _appointmentRepository.Update(appointment);
             return true;
         }
-
-        public List<ScheduleDTO> SearchForPatientDoctor(AppointmentDTO dto)
+        public List<SearchAppointmentResultDTO> SearchForPatientDoctor(SearchAppointmentDTO dto, Guid perosonId)
         {
-            List<DateTime> dates = GetAppointmentsDateTime(dto.Range.StartTime, dto.Range.EndTime);
-            List<ScheduleDTO> result = new List<ScheduleDTO>();
+            List<DateRange> dates = GetAppointmentsDateTime(dto.Range.StartTime, dto.Range.EndTime);
+            List<SearchAppointmentResultDTO> result = new List<SearchAppointmentResultDTO>();
 
-            foreach (DateTime dt in dates)
+            Patient patient = _petientRepository.GetById(perosonId);
+            var doctorId = patient.ChosenDoctorId;
+            foreach (DateRange dr in dates)
             {
-                if (GetAll().Any(a => a.DoctorId == dto.DoctorId && a.Status != Status.Canceled && a.Range.StartTime == dt) == false) //da li ima neko ko je zakazao termin
+                if (GetAll().Any(a => a.DoctorId == doctorId && a.Status != Status.Canceled && a.Range.StartTime == dr.StartTime && a.Range.EndTime == dr.EndTime) == false) //da li ima neko ko je zakazao termin
                 {
-                    var doc = _doctorRepository.GetById(dto.DoctorId);
-                    var FullName = doc.Specialization + " " + doc.Name + " " + doc.Surname;
-                    result.Add(new ScheduleDTO(dto.DoctorId, new DateRange(dt, dt.Add(AppointmentDuration)), FullName));
+                    var doc = _doctorRepository.GetById(doctorId);
+                    var FullName = doc.GetFullName();
+                    result.Add(new SearchAppointmentResultDTO(doctorId, new DateRange(dr.StartTime, dr.EndTime), FullName));
                     return result; //lista u sebi ima samo jedan termin
                 }
             }
@@ -98,13 +109,14 @@ namespace HospitalLibrary.Core.Service
                 dto.Range.StartTime = FindStartDate(dto.Range.StartTime);
                 dto.Range.EndTime = dto.Range.EndTime.AddDays(7);
                 dates = GetAppointmentsDateTime(dto.Range.StartTime, dto.Range.EndTime);
-                foreach (DateTime dt in dates)  //provera na +-7 dana
+                foreach (DateRange dr in dates) //provera na +-7 dana
                 {
-                    if (GetAll().Any(a => a.DoctorId == dto.DoctorId && a.Status != Status.Canceled && a.Range.StartTime == dt) == false) //da li ima neko ko je zakazao termin
+                    if (GetAll().Any(a => a.DoctorId == doctorId && a.Status != Status.Canceled && a.Range.StartTime == dr.StartTime && a.Range.EndTime == dr.EndTime) == false) //da li ima neko ko je zakazao termin
                     {
-                        var doc = _doctorRepository.GetById(dto.DoctorId);
-                        var FullName = doc.Specialization + " " + doc.Name + " " + doc.Surname; 
-                        result.Add(new ScheduleDTO(dto.DoctorId, new DateRange(dt, dt.Add(AppointmentDuration)), FullName));
+                        var doc = _doctorRepository.GetById(doctorId);
+                        var FullName = doc.GetFullName();
+                        result.Add(new SearchAppointmentResultDTO(doctorId, new DateRange(dr.StartTime, dr.EndTime), FullName));
+                        return result; //lista u sebi ima samo jedan termin
                     }
                 }
             }
@@ -126,21 +138,21 @@ namespace HospitalLibrary.Core.Service
  
         }
 
-        private List<DateTime> GetAppointmentsDateTime(DateTime start, DateTime end) //vraca sva vremena
+        private List<DateRange> GetAppointmentsDateTime(DateTime start, DateTime end) //vraca sva vremena
         {
-            List<DateTime> result = new List<DateTime>();
+            List<DateRange> result = new List<DateRange>();
             start = start.Date + new TimeSpan(8, 0, 0); //pokupi datum i na datum veze vreme
-            end = end.Date + new TimeSpan(16, 0, 0); 
-                                     //dt < end
-            for(DateTime dt = start; dt <= end; dt = dt.Add(AppointmentDuration)) //krece od start date i ide do end date-a
+            end = end.Date + new TimeSpan(16, 0, 0);
+            //dt < end
+            for (DateTime dt = start; dt <= end; dt = dt.Add(AppointmentDuration)) //krece od start date i ide do end date-a
             {
-                if(CheckAppointmentTime(dt)) 
+                if (CheckAppointmentTime(dt))
                 {
-                    result.Add(dt);
+                    result.Add(new DateRange(dt, dt.Add(AppointmentDuration)));
                 }
                 else
                 {
-                    dt = new DateTime(dt.Year, dt.Month, dt.Day, 8,0,0);
+                    dt = new DateTime(dt.Year, dt.Month, dt.Day, 8, 0, 0);
                     dt = dt.AddDays(1);
                 }
             }
@@ -158,50 +170,72 @@ namespace HospitalLibrary.Core.Service
 
 
         //search preko uputa
-        public IEnumerable<Appointment> SearchAppointmentByDoctorPriority(AppointmentDTO dto)
+        public IEnumerable<Appointment> SearchAppointmentByDoctorPriority(SearchAppointmentDTO dto)
         {
             throw new NotImplementedException();
         }
 
 
-        public List<ScheduleDTO> SearchAppointmentByTimePriority(AppointmentDTO dto)
+        public List<SearchAppointmentResultDTO> SearchByDoctorsDirection(SpecializationSearchAppointmentDTO dto)
         {
-            List<DateTime> dates = GetAppointmentsDateTime(dto.Range.StartTime, dto.Range.EndTime);
-            List<ScheduleDTO> result = new List<ScheduleDTO>();
+            List<DateRange> dates = GetAppointmentsDateTime(dto.Range.StartTime, dto.Range.EndTime);
+            List<SearchAppointmentResultDTO> result = new List<SearchAppointmentResultDTO>();
 
-            foreach (DateTime dt in dates)
+            foreach (DateRange dr in dates)
             {
-                if (GetAll().Any(a => a.DoctorId == dto.DoctorId && a.Status != Status.Canceled && a.Range.StartTime == dt) == false) //da li ima neko ko je zakazao termin
+                if (GetAll().Any(a => a.DoctorId == dto.DoctorId && a.Status == Status.Pending && a.Range.StartTime == dr.StartTime && a.Range.EndTime == dr.EndTime) == false) //da li ima neko ko je zakazao termin
                 {
                     var doca = _doctorRepository.GetById(dto.DoctorId);
-                    var FullName = doca.Specialization + " " + doca.Name + " " + doca.Surname;
-                    result.Add(new ScheduleDTO(dto.DoctorId, new DateRange(dt, dt.Add(AppointmentDuration)), FullName));
+                    var FullName = doca.GetFullName();
+                    result.Add(new SearchAppointmentResultDTO(dto.DoctorId, new DateRange(dr.StartTime, dr.EndTime), FullName));
                     return result; //lista u sebi ima samo jedan termin
                 }
+          
             }
 
-
-            if (result.Count == 0)
+            if(dto.Priority == Priority.DoctorPriority)
             {
-                Doctor doctor = _doctorRepository.GetById(dto.DoctorId);
-                foreach(Doctor doc in _doctorRepository.GetAll())
+                dates = GetAppointmentsDateTime(dto.Range.StartTime.AddDays(-7), dto.Range.EndTime.AddDays(7));
+                foreach (DateRange dr in dates)
                 {
-                    if(doc.Specialization == doctor.Specialization)
+                    if (GetAll().Any(a => a.DoctorId == dto.DoctorId && a.Status == Status.Pending && a.Range.StartTime == dr.StartTime && a.Range.EndTime == dr.EndTime) == false) //da li ima neko ko je zakazao termin
                     {
-                        foreach (DateTime dt in dates)  //provera na +-7 dana
+                        var doca = _doctorRepository.GetById(dto.DoctorId);
+                        var FullName = doca.GetFullName();
+                        result.Add(new SearchAppointmentResultDTO(dto.DoctorId, new DateRange(dr.StartTime, dr.EndTime), FullName));
+                        return result;
+                    }
+
+                }
+
+            }
+            if (dto.Priority == Priority.TimePriority)
+            {
+                var doctors = _doctorRepository.getAllDoctorsBySpetialization(dto.Specialization);
+                foreach (var doc in doctors)
+                {
+                    foreach (DateRange dr in dates)
+
+                    {
+                        if (GetAll().Any(a => a.DoctorId == doc.Id && a.Status != Status.Canceled && a.Range.StartTime == dr.StartTime && a.Range.EndTime == dr.EndTime) == false) //da li ima neko ko je zakazao termin
                         {
-                            if (GetAll().Any(a => a.DoctorId == doc.Id && a.Status != Status.Canceled && a.Range.StartTime == dt) == false) //da li ima neko ko je zakazao termin
-                            {
-                                var doca = _doctorRepository.GetById(dto.DoctorId);
-                                var FullName = doca.Specialization + " " + doca.Name + " " +doca.Surname;
-                                result.Add(new ScheduleDTO(doc.Id, new DateRange(dt, dt.Add(AppointmentDuration)), FullName));
-                            }
+                            var doca = _doctorRepository.GetById(doc.Id);
+                            var FullName = doca.GetFullName();
+                            result.Add(new SearchAppointmentResultDTO(doc.Id, new DateRange(dr.StartTime, dr.EndTime), FullName));
+                            return result; //lista u sebi ima samo jedan termin
                         }
                     }
+
                 }
             }
+           
 
             return result;
+        }
+
+        public List<Appointment> GetAllAppointmentsByDoctor(Guid doctorId)
+        {
+            return _appointmentRepository.GetAllAppointmentsByDoctor(doctorId);
         }
     }
 }

@@ -7,7 +7,7 @@ import { MaterialModule } from "./material/material.module";
 import { HospitalModule } from "./modules/hospital/hospital.module";
 import { PagesModule } from "./modules/pages/pages.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import {Toast, ToastrModule} from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent
@@ -19,7 +19,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     MaterialModule,
     PagesModule,
-    HospitalModule
+    HospitalModule,
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: "toast-top-center",
+      preventDuplicates: true
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

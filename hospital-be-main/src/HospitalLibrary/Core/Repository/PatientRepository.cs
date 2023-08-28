@@ -25,11 +25,10 @@ namespace HospitalLibrary.Core.Repository
             _context.Patients.Add(patient);
             _context.SaveChanges();
         }
-        /*
-        public Patient GetByEmail(string email)
+
+        public Patient GetById(Guid id)
         {
-            return _context.Patients.SingleOrDefault(p => p.Email.Address.Equals(email));
+            return _context.Patients.Find(id);
         }
-        */
     }
 }

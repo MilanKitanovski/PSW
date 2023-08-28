@@ -9,7 +9,7 @@ namespace HospitalLibrary.Core.DTO
 {
     public class InternalDataDTO
     {
-        public Guid? UserId;
+        public Guid PatientId;
         public string BloodPressure { get; set; }
         public double BloodSugar { get; set; }
         public double Fats { get; set; }

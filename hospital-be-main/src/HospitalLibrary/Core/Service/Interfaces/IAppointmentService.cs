@@ -1,5 +1,6 @@
 ﻿using HospitalLibrary.Core.DTO;
 using HospitalLibrary.Core.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,13 @@ namespace HospitalLibrary.Core.Service.Interfaces
         IEnumerable<Appointment> GetPandingAppointmentsByPatient(Guid patientId);
         IEnumerable<Appointment> GetFinishedAppointmentsByPatient(Guid patientId);
         IEnumerable<Appointment> GetCanceledAppointmentsByPatient(Guid patientId);
-        IEnumerable<Appointment> SearchAppointmentByDoctorPriority(AppointmentDTO dto);
-        List<ScheduleDTO> SearchAppointmentByTimePriority(AppointmentDTO dto);
-        List<ScheduleDTO> SearchForPatientDoctor(AppointmentDTO dto);
+        IEnumerable<Appointment> SearchAppointmentByDoctorPriority(SearchAppointmentDTO dto);
+        List<SearchAppointmentResultDTO> SearchByDoctorsDirection(SpecializationSearchAppointmentDTO dto);
+        List<SearchAppointmentResultDTO> SearchForPatientDoctor(SearchAppointmentDTO dto, Guid personId);
         bool CanceledAppointment(Guid appointmentId);
+        List<Appointment> GetAllAppointmentsByDoctor(Guid doctorId);
+
+        void FinishAppointment(Guid appointmentId);
 
         bool CheckAppointmentTime(DateTime dt);
     }

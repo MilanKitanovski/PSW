@@ -7,6 +7,7 @@ using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Exceptions;
 using HospitalLibrary.Settings;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Core.Repository
 {
@@ -62,12 +63,8 @@ namespace HospitalLibrary.Core.Repository
 
         public User GetUserWithEmail(string email)
         {
-            var result = _context.Users.Find(email);
-            if (result == null)
-            {
-                throw new NotFoundException();
-            }
-            return result;
+            return _context.Set<User>().SingleOrDefault(u => u.Email.Address == email);
+
         }
 
         public bool isEmailExist(string email)
@@ -80,17 +77,5 @@ namespace HospitalLibrary.Core.Repository
             return _context.Users.SingleOrDefault(p => p.Email.Address.Equals(email));
         }
 
-        /*
-        public IEnumerable<User> GetAllDoctors()
-        {
-            return _context.Users.Where(d => d.UserType==UserType.Doctor);
-        }*/
-
-        /*
-        public bool isEmailExist(string email)
-        {
-            bool emailExist = _context.Users.Any(u => u.Email == email);
-            return emailExist;
-        } */
     }
 }
