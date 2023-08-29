@@ -22,20 +22,21 @@ namespace HospitalAPI.Controllers
         {
             _notificationService = notificationService;
             _adminService = adminService;
+            _jwtService = jwtService;
 
         }
 
 
         [HttpPost("createNotification")]
         [Authorize(Roles = "Admin")]
-        public ActionResult CreateNotification(NotificationDTO dto)
+        public ActionResult CreateNotification([FromBody] NotificationDTO dto)
         {
             try
             {
                 User user = _jwtService.GetCurrentUser(HttpContext.User);
-                Admin admin = _adminService.GetById(user.Id);
+                Admin admin = _adminService.GetById(user.PersonId);
                 Notification notification = new Notification(Guid.NewGuid(), admin, dto.TextNotification);
-                return Ok(notification);
+                return Ok(new { message = "Notification created" });
             }
             catch (EntityObjectValidationFailedException e)
             {

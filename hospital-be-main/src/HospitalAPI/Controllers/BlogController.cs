@@ -38,7 +38,7 @@ namespace HospitalAPI.Controllers
                 Doctor doctor = _doctorService.GetById(user.PersonId);
                 Blog blog = new Blog(Guid.NewGuid(), dto.TextBlog, doctor, dto.Theme);
                 _blogService.Create(blog);
-                return Ok(blog);
+                return Ok(new {message = "Blog created"});
             }
             catch (EntityObjectValidationFailedException e)
             {

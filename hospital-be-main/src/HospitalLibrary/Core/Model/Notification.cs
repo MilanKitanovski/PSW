@@ -29,7 +29,7 @@ namespace HospitalAPI.Model
             if (Admin == null)
                 throw new EntityObjectValidationFailedException("Admin cant be null");
             if (string.IsNullOrEmpty(TextNotification))
-                throw new EntityObjectValidationFailedException("Notification is empty");
+                throw new EntityObjectValidationFailedException("Text of the notification is empty");
         }
     }
 }

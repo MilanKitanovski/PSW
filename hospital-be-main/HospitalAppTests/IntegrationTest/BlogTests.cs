@@ -64,8 +64,8 @@ namespace HospitalAppTests.IntegrationTest
                 Theme = BlogTheme.Medicine
             };
 
-            var result = ((OkObjectResult)controller.CreateBlog(blogDto))?.Value as Blog;
-            result.ShouldNotBeNull();
+            var result = ((OkObjectResult)controller.CreateBlog(blogDto))?.Value;
+            result.ToString().ShouldBe("{ message = Blog created }");
         }
 
         [Fact]

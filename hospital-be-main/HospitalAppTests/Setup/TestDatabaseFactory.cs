@@ -131,7 +131,6 @@ namespace HospitalAppTests.Setup
             isDbCreated = false;
 
 
-            var app = context.Appointments.Find(new Guid("ffafa2e4-ee6b-4cd4-95f7-7704339ece0f"));
 
 
         }
