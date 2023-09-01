@@ -10,10 +10,10 @@ namespace HospitalLibrary.Core.Model
 {
     public class Person
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string PhoneNumber { get; set; }
+        public Guid Id { get; private set; }
+        public string Name { get; private set; }
+        public string Surname { get; private set; }
+        public string PhoneNumber { get; private set; }
 
         public Person(Guid id, string name, string surname, string phoneNumber)
         {

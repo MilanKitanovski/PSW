@@ -28,7 +28,7 @@ namespace HospitalAppTests.IntegrationTest
         {
 
             return new AppointmentController(scope.ServiceProvider.GetRequiredService<IDoctorService>(), scope.ServiceProvider.GetRequiredService<IAppointmentService>(),
-                scope.ServiceProvider.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IJwtService>(), scope.ServiceProvider.GetRequiredService<IPatientService>())
+                scope.ServiceProvider.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IJwtService>(), scope.ServiceProvider.GetRequiredService<IPatientService>(), scope.ServiceProvider.GetRequiredService<IUserService>())
             {
                 ControllerContext = controllerContext
             };

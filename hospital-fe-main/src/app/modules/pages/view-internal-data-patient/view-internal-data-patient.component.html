@@ -28,7 +28,11 @@
 
   <ng-container matColumnDef="menstrual">
     <th mat-header-cell *matHeaderCellDef> menstrual</th>
-    <td mat-cell *matCellDef="let element"> {{element.date.startTime}} - {{element.date.endTime}}</td>
+    <td mat-cell *matCellDef="let element" >
+      <span *ngIf="element.menstrual"> {{element.menstrual.startTime}} - {{element.menstrual.endTime}}</span>
+      <span *ngIf="!element.menstrual"> NO DATA</span>
+
+    </td>
   </ng-container>
 
 

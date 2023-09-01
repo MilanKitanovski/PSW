@@ -7,18 +7,18 @@ namespace HospitalAPI.Model
 {
     public class Report
     {
-        public Guid Id { get; set; }
-        public Guid DoctorId { get; set; }
-        public virtual Doctor Doctor { get; set; }
-        public Guid PatientId { get; set; }
-        public virtual Patient Patient { get; set; }
-        public string Diagnosis { get; set; }
-        public string Treatment { get; set; }
-        public Guid InternalDataId { get; set; }
-        public virtual InternalData InternalData { get; set; }
+        public Guid Id { get; private set; }
+        public Guid DoctorId { get; private set; }
+        public virtual Doctor Doctor { get; private set; }
+        public Guid PatientId { get; private set; }
+        public virtual Patient Patient { get; private set; }
+        public string Diagnosis { get; private set; }
+        public string Treatment { get; private set; }
+        public Guid InternalDataId { get; private set; }
+        public virtual InternalData InternalData { get; private set; }
 
-        public Guid AppointmentId { get; set; }
-        public virtual Appointment Appointment { get; set; }
+        public Guid AppointmentId { get; private set; }
+        public virtual Appointment Appointment { get; private set; }
 
         public Report() { }
 

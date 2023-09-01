@@ -139,9 +139,45 @@ namespace HospitalAppTests.Setup
         private static void initUsers(HospitalDbContext context)
         {
             User patient1 = new User(new Guid("3b4fbc0c-3c7f-4e1a-a1bc-25b961584947"), new Guid("21e0b73f-df84-4fcb-93c1-029395181800"), UserType.Patient, "patient1@gmail.com", "123");
+            patient1.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            patient1.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            patient1.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
             User patient2 = new User(new Guid("30fe9cb2-9518-460d-be48-7cbd5ba614a4"), new Guid("0f888ab6-f62d-4bbe-9382-6b9d651ac210"), UserType.Patient, "patient2@gmail.com", "123");
+            patient2.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            patient2.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+
             context.Users.Add(patient1);
             context.Users.Add(patient2);
+
+            User blocked1 = new User(new Guid("e274f85a-034a-477a-bf8f-5f21467e9caa"), new Guid("22e0b73f-df84-4fcb-93c1-029395181800"), UserType.Patient, "patient3@gmail.com", "123");
+            User blocked2 = new User(new Guid("a59197e6-a685-4122-be24-b6a2ae477b9d"), new Guid("23e0b73f-df84-4fcb-93c1-029395181800"), UserType.Patient, "patient4@gmail.com", "123");
+            User notBlocked1 = new User(new Guid("c86d1f40-35b6-4a29-aba0-1661e06a422f"), new Guid("24e0b73f-df84-4fcb-93c1-029395181800"), UserType.Patient, "patient5@gmail.com", "123");
+            User notBlecked2 = new User(new Guid("4ab3fe26-cdb1-44e8-aadb-70e4cb9ebc40"), new Guid("25e0b73f-df84-4fcb-93c1-029395181800"), UserType.Patient, "patient6@gmail.com", "123");
+
+            blocked1.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            blocked1.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            blocked1.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            blocked1.Block();
+
+
+            blocked2.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            blocked2.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            blocked2.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            blocked2.Block();
+
+            notBlocked1.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            notBlocked1.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            notBlocked1.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+
+            notBlecked2.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            notBlecked2.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+            notBlecked2.AddSuspiciousActivity(new SuspiciousActivity("cancelation"));
+
+
+            context.Users.Add(blocked1);
+            context.Users.Add(blocked2);
+            context.Users.Add(notBlocked1);
+            context.Users.Add(notBlecked2);
 
 
             User doctor1 = new User(new Guid("36cc0978-e593-4016-b7d2-208632a451ac"), new Guid("e5213e5b-66d3-4f34-8e5c-2087c19f61ab"), UserType.Doctor, "doctor1@gmail.com", "123");

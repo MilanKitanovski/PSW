@@ -22,23 +22,50 @@ namespace HospitalLibrary.Core.Repository
 
         public IEnumerable<User> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _context.Users.ToList();
         }
 
         public User GetById(Guid id)
         {
-            throw new System.NotImplementedException();
+            return _context.Users.Find(id);
+        }
+
+        public User GetByPersonId(Guid personId)
+        {
+            var user = _context.Users.SingleOrDefault(u => u.PersonId == personId);
+            if (user == null)
+            {
+                throw new NotFoundException("Not Found");
+            }
+
+            return user;
         }
 
         public void Create(User user)
         {
             _context.Users.Add(user);
+            try
+            {
+
             _context.SaveChanges();
+            }catch (Exception ex)
+            {
+                throw new Exception("Email is not unique");
+            }
         }
 
         public void Update(User user)
         {
-            throw new System.NotImplementedException();
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
         }
 
         public void Delete(User user)
@@ -56,7 +83,7 @@ namespace HospitalLibrary.Core.Repository
             var result = _context.Users.Find(username);
             if (result == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException("Not Found");
             }
             return result;
         }
@@ -76,6 +103,13 @@ namespace HospitalLibrary.Core.Repository
         {
             return _context.Users.SingleOrDefault(p => p.Email.Address.Equals(email));
         }
+
+        public IEnumerable<User> GetAllUserBySuspiciousActivity()
+        {
+            return GetAll().Where(a => a.IsUserSuspicious());
+        }
+
+
 
     }
 }

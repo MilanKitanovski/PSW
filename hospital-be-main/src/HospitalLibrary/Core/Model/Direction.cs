@@ -12,11 +12,11 @@ namespace HospitalLibrary.Core.Model
 {
     public class Direction
     {
-        public Guid Id { get; set; }
-        public Guid PatientId { get; set; }
-        public virtual Patient Patient { get; set; }
-        public Specialization Specialization { get; set; }
-        public bool IsActive { get; set; }
+        public Guid Id { get; private set; }
+        public Guid PatientId { get; private set; }
+        public virtual Patient Patient { get; private set; }
+        public Specialization Specialization { get; private set; }
+        public bool IsActive { get; private set; }
 
         public Direction() { }
 

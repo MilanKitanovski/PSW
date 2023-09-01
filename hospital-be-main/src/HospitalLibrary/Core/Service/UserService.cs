@@ -50,6 +50,17 @@ namespace HospitalLibrary.Core.Service
             return null;
         }
 
+        public void BlockUser(Guid id)
+        {
+            User user = _userRepository.GetById(id);
+            if(user == null)
+            {
+                throw new NotFoundException("Not Found");
+            }
+            user.Block();
+            _userRepository.Update(user);
+
+        }
         public string Authenticate(string email, string password)
         {
             //Password enteredPassword = new Password(password);
@@ -57,20 +68,20 @@ namespace HospitalLibrary.Core.Service
 
             if (user == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException("Not Found");
             }
 
           
 
             if (!user.Password.Equals(password))
             {
-                throw new BadPasswordException();
+                throw new BadPasswordException("Bad Password");
             }
 
 
             if (user.IsBlock)
             {
-                throw new UserIsBlockedException();
+                throw new UserIsBlockedException("User is blocked");
             }
 
             return _jwtService.GenerateToken(user);
@@ -87,14 +98,6 @@ namespace HospitalLibrary.Core.Service
         {
                 return null;
         }
-
-/*        public User ChoseDoctor(User user, Guid doctorId)
-        {
-            var doctor = _userRepository.GetById(doctorId);
-            user.AppointTheChosenDoctor(doctor);
-            _userRepository.Create(user);
-            return user;
-        } */
 
         public User UpdateProfile(User dto)
         {
@@ -127,11 +130,29 @@ namespace HospitalLibrary.Core.Service
                 return true;
             return false;
         }
-        /*
-        public IEnumerable<User> GetAllDoctors()
-        {
-            return _userRepository.GetAllDoctors();
-        } */
 
+        public void AddSuspiciousActivityToUser(Guid personId, SuspiciousActivity suspiciousActivity)
+        {
+            User user = _userRepository.GetByPersonId(personId);
+            user.AddSuspiciousActivity(suspiciousActivity);
+
+            _userRepository.Update(user);
+        }
+
+        public IEnumerable<User> GetAllUserBySuspiciousActivity()
+        {
+            return _userRepository.GetAllUserBySuspiciousActivity();
+        }
+
+        public void Unblock(Guid id)
+        {
+            User user = _userRepository.GetById(id);
+            if (user == null)
+            {
+                throw new NotFoundException("Not Found");
+            }
+            user.Unblock();
+            _userRepository.Update(user);
+        }
     }
 }

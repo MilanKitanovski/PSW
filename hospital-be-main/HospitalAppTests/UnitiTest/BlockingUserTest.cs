@@ -19,6 +19,11 @@ namespace HospitalAppTests.UnitiTest
         public void Blocking_unblocked_user_with_more_than_enough_suspicious_activities()
         {
             User user = new User(Guid.NewGuid(), Guid.NewGuid(), UserType.Patient, "milan.kitanovski@gmail.com", "Test");
+            SuspiciousActivity suspiciousActivity = new SuspiciousActivity("TEST");
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
             user.Block();
             user.IsBlock.ShouldBe(true);
         }
@@ -26,8 +31,12 @@ namespace HospitalAppTests.UnitiTest
         [Fact]
         public void Unblocking_blocked_user()
         {
-            //User user = new User(Guid.NewGuid(), "Milan", "Milanovic", new Email("milan.kitanovski@gmail.com"), "Test", "1234");
             User user = new User(Guid.NewGuid(), Guid.NewGuid(), UserType.Patient, "milan.kitanovski@gmail.com", "Test");
+            SuspiciousActivity suspiciousActivity = new SuspiciousActivity("TEST");
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
             user.Block();
             user.Unblock();
             user.IsBlock.ShouldBe(false);
@@ -40,12 +49,58 @@ namespace HospitalAppTests.UnitiTest
             Should.Throw<UserIsNotBlockedException>(() => user.Unblock());
         }
 
+
+        [Fact]
+        public void Blocking_unblocked_user_with_less_than_enough_suspicious_activities()
+        {
+
+            User user = new User(Guid.NewGuid(), Guid.NewGuid(), UserType.Patient, "milan.kitanovski@gmail.com", "Test");
+            SuspiciousActivity suspiciousActivity = new SuspiciousActivity("TEST");
+            user.AddSuspiciousActivity(suspiciousActivity);
+            Should.Throw<UserCanNotBeBlocked>(() => user.Block());
+        }
+
+        [Fact]
+        public void Blocking_unblocked_user_with_suspicious_activities_limit_case()
+        {
+            User user = new User(Guid.NewGuid(), Guid.NewGuid(), UserType.Patient, "milan.kitanovski@gmail.com", "Test");
+            SuspiciousActivity suspiciousActivity = new SuspiciousActivity("TEST");
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
+
+            user.Block();
+
+            user.IsBlock.ShouldBe(true);
+        }
+
         [Fact]
         public void Blocking_blocked_patient()
         {
             User user = new User(Guid.NewGuid(), Guid.NewGuid(), UserType.Patient, "milan.kitanovski@gmail.com", "Test");
+            SuspiciousActivity suspiciousActivity = new SuspiciousActivity("TEST");
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
+            user.AddSuspiciousActivity(suspiciousActivity);
             user.Block();
             Should.Throw<UserIsAlreadyBlockedException>(() => user.Block());
+        }
+
+        [Fact]
+        public void Suspicious_activity_value_object_created()
+        {
+            var result = new SuspiciousActivity("21321312321123213232312123321");
+            result.ShouldNotBeNull();
+        }
+
+
+        [Fact]
+        public void Suspicious_activity_value_object_not_created()
+        {
+           
+            Should.Throw<ValueObjectValidationFailedException>(() => new SuspiciousActivity(""));
+          
         }
     }
 }

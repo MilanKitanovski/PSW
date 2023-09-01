@@ -8,7 +8,7 @@ namespace HospitalLibrary.Exceptions
 {
     public class BadPasswordException: Exception
     {
-        public BadPasswordException() { }
+        public BadPasswordException(string message) : base(message) { }
 
     }
 }

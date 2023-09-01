@@ -23,7 +23,7 @@ namespace HospitalLibrary.Core.Model
 
 
         public Guid ChosenDoctorId { get; private set; }
-        public virtual Doctor ChosenDoctor { get; set; }
+        public virtual Doctor ChosenDoctor { get; private set; }
 
         public void AppointTheChosenDoctor(Doctor doctor)
         {

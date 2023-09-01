@@ -12,7 +12,7 @@ namespace HospitalLibrary.Core.Model
         public Guid PatientId { get; private set; }
         public virtual Patient Patient { get; private set; }
         public DateRange Range { get; private set; }
-        public Status Status { get; set; }
+        public Status Status { get; private set; }
 
 
         public Appointment() { }
@@ -53,6 +53,11 @@ namespace HospitalLibrary.Core.Model
         public void FinishAppointment()
         {
             Status = Status.Finished;
+        }
+
+        public void CancelAppointment()
+        {
+            Status = Status.Canceled;
         }
 
 

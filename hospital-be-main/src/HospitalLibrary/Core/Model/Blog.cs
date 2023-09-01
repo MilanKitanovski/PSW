@@ -8,11 +8,11 @@ namespace HospitalAPI.Model
 {
     public class Blog
     {
-        public Guid Id { get; set; }
-        public Guid DoctorId { get; set; }
-        public virtual Doctor Doctor { get; set; }
-        public string TextBlog { get; set; }
-        public BlogTheme Theme { get; set; }
+        public Guid Id { get; private set; }
+        public Guid DoctorId { get; private set; }
+        public virtual Doctor Doctor { get; private set; }
+        public string TextBlog { get; private set; }
+        public BlogTheme Theme { get; private set; }
 
 
         public Blog() { }

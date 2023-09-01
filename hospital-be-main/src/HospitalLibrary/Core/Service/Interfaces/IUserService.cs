@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using HospitalAPI.DTO;
 using HospitalAPI.Model;
+using HospitalLibrary.Core.Model;
 
 namespace HospitalLibrary.Core.Service.Interfaces
 {
@@ -21,9 +22,11 @@ namespace HospitalLibrary.Core.Service.Interfaces
 
         string Authenticate(string email, string password);
         bool EmailisUnique(string email);
-        //User ChoseDoctor(User user, Guid doctorId);
-        //IEnumerable<User> GetAllDoctors();
+        void AddSuspiciousActivityToUser(Guid personId, SuspiciousActivity suspiciousActivity);
 
+        IEnumerable<User> GetAllUserBySuspiciousActivity();
 
+        void BlockUser(Guid id);
+        void Unblock(Guid id);
     }
 }

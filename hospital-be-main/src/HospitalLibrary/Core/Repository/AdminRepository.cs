@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Core.Model;
+﻿using HospitalAPI.Model;
+using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Settings;
 using System;
@@ -22,5 +23,7 @@ namespace HospitalLibrary.Core.Repository
         {
             return _context.Admins.Find(id);
         }
+
+        
     }
 }

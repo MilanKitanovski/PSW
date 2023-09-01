@@ -8,6 +8,6 @@ namespace HospitalLibrary.Exceptions
 {
     public class MaleCantMensruation : Exception
     {
-        public MaleCantMensruation() { }
+        public MaleCantMensruation(string message) : base(message) { }
     }
 }

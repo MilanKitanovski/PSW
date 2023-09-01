@@ -8,6 +8,6 @@ namespace HospitalLibrary.Exceptions
 {
     public class UserIsNotBlockedException: Exception
     {
-        public UserIsNotBlockedException() { }
+        public UserIsNotBlockedException(string message) : base(message) { }
     }
 }

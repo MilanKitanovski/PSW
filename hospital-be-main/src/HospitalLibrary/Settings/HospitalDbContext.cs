@@ -24,9 +24,11 @@ namespace HospitalLibrary.Settings
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-          
+            modelBuilder.Entity<User>()
+                 .Ignore(u => u.SuspiciousActivities)
+                 .Property("suspicious_activities");
 
-
+           
 
         }
     }

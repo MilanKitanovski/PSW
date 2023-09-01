@@ -26,4 +26,29 @@ export class UserService {
   login(user: any){
     return this.http.post<any>(this.apiHost+'/login', user);
   }
+
+  GetAllUserBySuspiciousActivity(): Observable<any> {
+    let headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+    });
+    return this.http.get<any>(this.apiHost + '/allSuspicious', {headers});
+  }
+
+  UnblockUser(id: any):Observable<any> {
+    let headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+    });
+    return this.http.put<any>(this.apiHost + '/unblockUser/' +id , {headers});
+  }
+
+
+  BlockUser(id:any):Observable<any> {
+    let headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+    });
+    return this.http.put<any>(this.apiHost + '/blockUser/' +id , {headers});
+  }
 }

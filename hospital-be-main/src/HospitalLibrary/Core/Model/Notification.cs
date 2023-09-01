@@ -6,11 +6,11 @@ namespace HospitalAPI.Model
 {
     public class Notification
     {
-        public Guid Id { get; set; }
-        public Guid AdminId { get; set; }
-        public virtual Admin Admin { get; set; }
+        public Guid Id { get; private set; }
+        public Guid AdminId { get; private set; }
+        public virtual Admin Admin { get; private set; }
         //ne sme da bude prazno
-        public string TextNotification { get; set; }
+        public string TextNotification { get; private set; }
 
         public Notification() { }
 

@@ -28,6 +28,17 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { ViewAppointmentsPatientComponent } from './view-appointments-patient/view-appointments-patient.component';
 import { CreateDirectionComponent } from './create-direction/create-direction.component';
 import { CreateReportComponent } from './create-report/create-report.component';
+import { ViewReportsPatientComponent } from './view-reports-patient/view-reports-patient.component';
+import { SuspiciousUsersComponent } from './suspicious-users/suspicious-users.component';
+import { CreateNotificationComponent } from './create-notification/create-notification.component';
+
+import { GraphTableComponent } from './graph/graph-table/graph-table.component';
+import {NgxChartsModule} from "@swimlane/ngx-charts";
+import { FatsComponent } from './graph/fats/fats.component';
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import { WeightComponent } from './graph/weight/weight.component';
+import { BloodSugarComponent } from './graph/blood-sugar/blood-sugar.component';
+
 
 @NgModule({
   declarations: [
@@ -45,7 +56,15 @@ import { CreateReportComponent } from './create-report/create-report.component';
     ViewAppointmentsPatientComponent,
     ViewInternalDataPatientComponent,
     CreateDirectionComponent,
-    CreateReportComponent
+    CreateReportComponent,
+    ViewReportsPatientComponent,
+    SuspiciousUsersComponent,
+    CreateNotificationComponent,
+    GraphTableComponent,
+     FatsComponent,
+     WeightComponent,
+     BloodSugarComponent,
+
   ],
   imports: [
     MatNativeDateModule,
@@ -67,6 +86,9 @@ import { CreateReportComponent } from './create-report/create-report.component';
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
+    NgxChartsModule,
+    CanvasJSAngularChartsModule
+
   ]
 })
 export class PagesModule { }

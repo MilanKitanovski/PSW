@@ -8,23 +8,27 @@ using HospitalLibrary.Core.Model;
 using System.Numerics;
 using HospitalLibrary.Core.Enum;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace HospitalAPI.Model
 {
     public class User
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
-        public Guid PersonId { get; set; }
-        public UserType UserType { get; set; }
+        public Guid PersonId { get; private set; }
+        public UserType UserType { get; private set; }
 
 
-        public Email Email { get;  set; }
+        public Email Email { get; private set; }
    
-        public string Password { get;  set; }
+        public string Password { get; private set; }
        
 
-        public bool IsBlock = false;  
+        public bool IsBlock  { get; private set; }
 
         public User() { }
         public User(Guid id, Guid personId, UserType userType, string email, string password)
@@ -49,19 +53,49 @@ namespace HospitalAPI.Model
         }
 
 
+        [Column(TypeName = "jsonb")] private List<SuspiciousActivity> suspicious_activities;
 
+        public List<SuspiciousActivity> SuspiciousActivities
+        {
+            get
+            {
+                suspicious_activities ??= new List<SuspiciousActivity>();
+                return new List<SuspiciousActivity>(suspicious_activities);
+            }
+            set { }
+
+        }
+
+        public void AddSuspiciousActivity(SuspiciousActivity suspiciousActivity)
+        {
+            suspicious_activities ??= new List<SuspiciousActivity>();
+            suspicious_activities.Add(suspiciousActivity);
+        }
+
+
+        public bool HasEnoughSuspiciousActivities()
+        {
+
+            return HospitalLibrary.Core.Model.Constants.MinSuspiciousActivityCount <= NumberOfSuspiciousActivitiesInRecentPeriod();
+        }
+
+        public int NumberOfSuspiciousActivitiesInRecentPeriod()
+        {
+            return SuspiciousActivities.Count(suspiciousActivity => suspiciousActivity.ActivityTime >= DateTime.Now.AddDays(-HospitalLibrary.Core.Model.Constants.SuspiciousActivityPeriodDaysCheck));
+
+        }
 
         public void Block()
         {
             if (IsBlock)
             {
-                throw new UserIsAlreadyBlockedException();
+                throw new UserIsAlreadyBlockedException("User is alredy blocked");
             }
 
-         /*   if (!HasEnoughSuspiciousActivities())
+            if (!HasEnoughSuspiciousActivities())
             {
-                throw new UserCanNotBeBlocked();
-            } */
+                throw new UserCanNotBeBlocked("User can not be blocked");
+            } 
 
             IsBlock = true;
         }
@@ -70,9 +104,15 @@ namespace HospitalAPI.Model
         {
             if (!IsBlock)
             {
-                throw new UserIsNotBlockedException();
+                throw new UserIsNotBlockedException("User is not blocked");
             }
             IsBlock = false;
         }
+
+        public bool IsUserSuspicious()
+        {
+            return IsBlock || HasEnoughSuspiciousActivities();
+        }
+
     }
 }

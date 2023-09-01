@@ -22,7 +22,7 @@ namespace HospitalLibrary.Core.Service.Interfaces
         IEnumerable<Appointment> SearchAppointmentByDoctorPriority(SearchAppointmentDTO dto);
         List<SearchAppointmentResultDTO> SearchByDoctorsDirection(SpecializationSearchAppointmentDTO dto);
         List<SearchAppointmentResultDTO> SearchForPatientDoctor(SearchAppointmentDTO dto, Guid personId);
-        bool CanceledAppointment(Guid appointmentId);
+        bool CanceledAppointment(Guid appointmentId, Guid patientId);
         List<Appointment> GetAllAppointmentsByDoctor(Guid doctorId);
 
         void FinishAppointment(Guid appointmentId);

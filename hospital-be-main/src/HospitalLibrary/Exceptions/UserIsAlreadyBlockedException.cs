@@ -8,6 +8,6 @@ namespace HospitalLibrary.Exceptions
 {
     public class UserIsAlreadyBlockedException: Exception
     {
-        public UserIsAlreadyBlockedException() { }
+        public UserIsAlreadyBlockedException(string message) : base(message) { }
     }
 }

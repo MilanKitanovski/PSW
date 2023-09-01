@@ -1,6 +1,15 @@
 <mat-toolbar color="primary">
   <span>Hospital Application</span>
   <span class="spacer"></span>
-  <button mat-button mat-raised-button color="warn">Login</button>
-  <button mat-button mat-raised-button color="warn">Register</button>
+  <button mat-button mat-raised-button color="warn" (click)="login()">Login</button>
+  <button mat-button mat-raised-button color="warn" (click)="registration()">Register</button>
 </mat-toolbar>
+
+<div class="scrollable-container">
+  <mat-card *ngFor="let notification of notifications" class="notification-card">
+    <mat-card-content>
+      {{ notification.textNotification }}
+    </mat-card-content>
+  </mat-card>
+</div>
+

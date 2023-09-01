@@ -1,0 +1,33 @@
+<nav>
+  <ul>
+    <!-- Displayed for not logged in user -->
+    <ng-container *ngIf="userRole !== 'Patient' && userRole !== 'Doctor' && userRole !== 'Admin'">
+      <li><a routerLink="/login">Login</a></li>
+      <li><a routerLink="/register">Register</a></li>
+    </ng-container>
+    <!-- Displayed only for Patient role -->
+    <ng-container *ngIf="userRole === 'Patient'">
+      <li><a routerLink="/regularSchedule">Regular scheduling</a></li>
+      <li><a routerLink="/specialistSchedule">Schedule for specialist</a></li>
+      <li><a routerLink="/createIData">Create internal data</a></li>
+      <li><a routerLink="/allIDatas">All internal datas</a></li>
+      <li><a routerLink="/allBlogs">All blogs</a></li>
+      <li><a routerLink="/allReports">All reports</a></li>
+      <li><a routerLink="/allDirections">All directions</a></li>
+      <li><a routerLink="/allAppointmentsPatient">All appointments</a></li>
+      <li><a routerLink="/graph">Graph</a></li>
+    </ng-container>
+    <!-- Displayed only for Admin role -->
+    <ng-container *ngIf="userRole === 'Admin'">
+      <li><a routerLink="/createNotification">Create notification</a></li>
+      <li><a routerLink="/suspiciousUsers">Suspicious users</a></li>
+    </ng-container>
+    <!-- Displayed only for Doctor role -->
+    <ng-container *ngIf="userRole === 'Doctor'">
+      <li><a routerLink="/createDirection">Create Direction</a></li>
+      <li><a routerLink="/allBlogs">All blogs</a></li>
+      <li><a routerLink="/createBlog">Create blogs</a></li>
+      <li><a routerLink="/createReport">Create Report</a></li>
+    </ng-container>
+  </ul>
+</nav>

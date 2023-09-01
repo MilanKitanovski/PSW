@@ -36,6 +36,7 @@ namespace HospitalAPI.Controllers
                 User user = _jwtService.GetCurrentUser(HttpContext.User);
                 Admin admin = _adminService.GetById(user.PersonId);
                 Notification notification = new Notification(Guid.NewGuid(), admin, dto.TextNotification);
+                _notificationService.Create(notification);
                 return Ok(new { message = "Notification created" });
             }
             catch (EntityObjectValidationFailedException e)

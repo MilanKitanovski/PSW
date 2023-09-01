@@ -1,0 +1,12 @@
+<form [formGroup]="notificationForm">
+  <div>
+    <mat-form-field class="example-full-width">
+      <label>Write a notification</label>
+      <textarea matInput placeholder="Write a notification" id="notificationText" formControlName="notificationText"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="form-group">
+    <button mat-button mat-raised-button color="accent" (click)="createNotification()">create</button>
+  </div>
+</form>

@@ -15,10 +15,7 @@ const year = today.getFullYear();
   styleUrls: ['./view-internal-data-patient.component.css']
 })
 export class ViewInternalDataPatientComponent implements OnInit {
-  campaignOne = new FormGroup({
-    start: new FormControl(new Date(year, month, 13)),
-    end: new FormControl(new Date(year, month, 16)),
-  });
+
   dataSource : InternalDataDTO[] = [];
   displayedColumns: string[] = ['bloodPressure', 'bloodSugar', 'fats', 'weight', 'menstrual'];
 

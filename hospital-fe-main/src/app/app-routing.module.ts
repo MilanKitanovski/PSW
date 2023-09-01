@@ -16,23 +16,35 @@ import {AllDIrectionsComponent} from "./modules/pages/all-directions/all-directi
 import {ViewAppointmentsPatientComponent} from "./modules/pages/view-appointments-patient/view-appointments-patient.component";
 import {CreateDirectionComponent} from "./modules/pages/create-direction/create-direction.component";
 import {CreateReportComponent} from "./modules/pages/create-report/create-report.component";
+import {ViewReportsPatientComponent} from "./modules/pages/view-reports-patient/view-reports-patient.component";
+import {RoleGuardService} from "./modules/hospital/auth/role-guard.service";
+import {SuspiciousUsersComponent} from "./modules/pages/suspicious-users/suspicious-users.component";
+import {NavbarComponent} from "./modules/pages/navbar/navbar.component";
+import {CreateNotificationComponent} from "./modules/pages/create-notification/create-notification.component";
+import {GraphTableComponent} from "./modules/pages/graph/graph-table/graph-table.component";
+import {FatsComponent} from "./modules/pages/graph/fats/fats.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent},
-  { path: 'register', component: RegisterComponent},
+  { path: 'login', component: LoginComponent,canActivate:[RoleGuardService] ,data: {role:['anon']}},
+  { path: 'register', component: RegisterComponent,canActivate:[RoleGuardService] ,data: {role:['anon']}},
   { path: '', redirectTo: '/register', pathMatch: 'full'},
-  { path: 'regularSchedule', component: ScheduleComponent},
-  { path: 'allAppointments', component: ViewAppointmentsDoctorComponent},
-  { path: 'createBlog', component: CreateBlogComponent},
-  { path: 'allBlogs', component:AllBlogsComponent},
-  { path: 'createIData', component: CreateInternalDataComponent},
-  { path: 'allIDatas', component: ViewInternalDataPatientComponent},
-  { path: 'specialistSchedule', component: SpecialistScheduleComponent},
-  { path: 'allDirections', component: AllDIrectionsComponent},
-  { path: "allAppointmentsPatient", component: ViewAppointmentsPatientComponent},
-  { path: "createDirection", component: CreateDirectionComponent},
-  { path: "createReport", component: CreateReportComponent},
+  { path: 'regularSchedule', component: ScheduleComponent , canActivate:[RoleGuardService] ,data: {role:['Patient']}},
+  { path: 'allAppointments', component: ViewAppointmentsDoctorComponent, canActivate:[RoleGuardService] ,data: {role:['Doctor']}},
+  { path: 'createBlog', component: CreateBlogComponent, canActivate:[RoleGuardService] ,data: {role:['Doctor']}},
+  { path: 'allBlogs', component:AllBlogsComponent, canActivate:[RoleGuardService] ,data: {role:['Doctor', 'Patient', 'Admin']}},
+  { path: 'createIData', component: CreateInternalDataComponent, canActivate:[RoleGuardService] ,data: {role:['Patient']}},
+  { path: 'allIDatas', component: ViewInternalDataPatientComponent, canActivate:[RoleGuardService] ,data: {role:['Patient']}},
+  { path: 'specialistSchedule', component: SpecialistScheduleComponent, canActivate:[RoleGuardService] ,data: {role:['Patient']}},
+  { path: 'allDirections', component: AllDIrectionsComponent, canActivate:[RoleGuardService] ,data: {role:['Patient']}},
+  { path: "allAppointmentsPatient", component: ViewAppointmentsPatientComponent, canActivate:[RoleGuardService] ,data: {role:['Patient']}},
+  { path: "createDirection", component: CreateDirectionComponent, canActivate:[RoleGuardService] ,data: {role:['Doctor']}},
+  { path: "createReport", component: CreateReportComponent, canActivate:[RoleGuardService] ,data: {role:['Doctor']}},
+  { path: "createNotification", component: CreateNotificationComponent, canActivate:[RoleGuardService] ,data: {role:['Admin']}},
+  { path: "allReports", component: ViewReportsPatientComponent, canActivate:[RoleGuardService] ,data: {role:['Patient']}},
+  {path: "suspiciousUsers", component: SuspiciousUsersComponent, canActivate:[RoleGuardService], data:{role:['Admin']}},
+  { path: "graph", component: GraphTableComponent, canActivate:[RoleGuardService], data:{role:['Patient']}},
+  { path: '*', redirectTo: '/register',},
 ];
 
 @NgModule({

@@ -7,11 +7,12 @@ import { CreateRoomComponent } from "./create-room/create-room.component";
 import { RoomDetailComponent } from "./room-detail/room-detail.component";
 import { RoomsComponent } from "./rooms/rooms.component";
 import { UpdateRoomComponent } from "./update-room/update-room.component";
+import { NavbarComponent } from '../pages/navbar/navbar.component';
 
 const routes: Routes = [
   { path: 'rooms', component: RoomsComponent },
   { path: 'rooms/add', component: CreateRoomComponent },
-  { path: 'rooms/:id', component: RoomDetailComponent },  
+  { path: 'rooms/:id', component: RoomDetailComponent },
   { path: 'rooms/:id/update', component: UpdateRoomComponent },
 ];
 
@@ -20,7 +21,8 @@ const routes: Routes = [
     RoomsComponent,
     RoomDetailComponent,
     CreateRoomComponent,
-    UpdateRoomComponent
+    UpdateRoomComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,6 @@ const routes: Routes = [
     ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
-  exports: [ RouterModule ]
+    exports: [RouterModule, NavbarComponent]
 })
 export class HospitalModule { }

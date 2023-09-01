@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace HospitalAPI.Controllers
 {
@@ -21,16 +22,16 @@ namespace HospitalAPI.Controllers
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
         private IAppointmentService appointmentService;
-        private IAppointmentService appointmentService1;
+        private readonly IUserService _userService;
 
-        public AppointmentController(IDoctorService doctorService, IAppointmentService appointmentService, IMapper mapper, IJwtService jwtService, IPatientService patientService)
+        public AppointmentController(IDoctorService doctorService, IAppointmentService appointmentService, IMapper mapper, IJwtService jwtService, IPatientService patientService, IUserService userService)
         {
             _appointmentService = appointmentService;
             _mapper = mapper;
             _jwtService = jwtService;
             _patientService = patientService;
             _doctorService = doctorService;
-
+            _userService = userService;
         }
 
         //for doctor
@@ -103,11 +104,13 @@ namespace HospitalAPI.Controllers
         {
             try
             {
-                if (_appointmentService.CanceledAppointment(appointmentId))
+                User user = _jwtService.GetCurrentUser(HttpContext.User);
+                if (_appointmentService.CanceledAppointment(appointmentId, user.PersonId))
                 {
+                    _userService.AddSuspiciousActivityToUser(user.PersonId, new SuspiciousActivity("Appointment cancellation"));
                     return Ok(new { message = "Appointment success cancled" });
                 }
-                return BadRequest(new { message = "Cancellation is not possible" });
+                return BadRequest(new { message = "Cancellation is not possible" }); 
             }catch (Exception ex)
             {
                 return BadRequest(new { message = ex.Message });

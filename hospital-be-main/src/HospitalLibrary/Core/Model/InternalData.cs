@@ -9,16 +9,17 @@ namespace HospitalAPI.Model
 {
     public class InternalData
     {
-        public Guid Id { get; set; }
-        public Guid PatientId { get; set; }
-        public virtual Patient Patient { get; set; }    
-        //validacija da je sve vece od 0
-        public string BloodPressure { get; set; }
-        public double BloodSugar { get; set; }
-        public double Fats { get; set; }
-        public double Weight { get; set; }
+        public Guid Id { get; private set; }
+        public Guid PatientId { get; private set; }
+        public virtual Patient Patient { get; private set; }    
+        public string BloodPressure { get; private set; }
+        public double BloodSugar { get; private set; }
+        public double Fats { get; private set; }
+        public double Weight { get; private set; }
 
-        public DateRange Menstrual { get; set; }
+        public DateRange Menstrual { get; private set; }
+
+        public DateTime TimeCreated { get; private set; }
 
         public InternalData() { }
 
@@ -31,6 +32,7 @@ namespace HospitalAPI.Model
             Fats = fats;
             Weight = weight;
             Menstrual = menstrual;
+            TimeCreated = DateTime.Now;
             Validate();
         }
 
@@ -61,7 +63,7 @@ namespace HospitalAPI.Model
         {
             if (Patient.GenderUser.Equals(Gender.Male)&& Menstrual!=null)
             {
-                throw new MaleCantMensruation();
+                throw new MaleCantMensruation("Male patient can not have menstruation");
             }
        
         }

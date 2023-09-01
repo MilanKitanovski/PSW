@@ -59,7 +59,9 @@ namespace HospitalLibrary.Core.Repository
 
         public List<InternalData> GetAllDatasForUser(Guid userId)
         {
-            return _context.InternalDatas.Where(u => u.PatientId == userId).ToList();
+            List<InternalData> dataList = _context.InternalDatas.Where(u => u.PatientId == userId).ToList();
+            dataList = dataList.OrderBy(data => data.TimeCreated).ToList();
+            return dataList;
 
         }
 

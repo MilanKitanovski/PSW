@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,13 +14,19 @@ namespace HospitalLibrary.Core.Model
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+
+          
             builder
             .OwnsOne(p => p.Email, email =>
             {
                 email.Property(prop => prop.Address)
                     .HasColumnName("EmailAddress");
+                email.HasIndex(prop => prop.Address)
+                      .IsUnique(); // Add unique constraint
             });
-            //builder.HasIndex(u => u.Email.Address).IsUnique();
+   
+
+
         }
     }
 }

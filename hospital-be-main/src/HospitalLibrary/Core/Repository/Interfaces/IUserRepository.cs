@@ -17,6 +17,7 @@ namespace HospitalLibrary.Core.Repository.Interfaces
         User GetUserWithEmail(string email);
         bool isEmailExist(string email);
         User GetByEmail(string email);
-        //IEnumerable<User> GetAllDoctors();
+        User GetByPersonId(Guid personId);
+        IEnumerable<User> GetAllUserBySuspiciousActivity();
     }
 }

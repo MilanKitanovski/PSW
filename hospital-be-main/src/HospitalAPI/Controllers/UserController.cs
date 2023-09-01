@@ -23,6 +23,7 @@ using HospitalLibrary.Core.Service.Interfaces;
 using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Core.Enum;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HospitalAPI.Controllers
 {
@@ -30,16 +31,12 @@ namespace HospitalAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly IPatientService _petientService;
         private readonly IUserService _userService;
-        private readonly IDoctorService _doctorService;
-        public UserController( IConfiguration configuration, IPatientService petientService, IUserService userService, IDoctorService doctorService)
+        public UserController( IPatientService petientService, IUserService userService)
         {
-            _configuration = configuration;
             _petientService = petientService;
             _userService = userService;
-            _doctorService = doctorService;
         }
 
 
@@ -81,14 +78,7 @@ namespace HospitalAPI.Controllers
             {
                 return Unauthorized("Bad credentials");
             }
-            catch (AccountNotActivatedException)
-            {
-                return StatusCode(403);
-            }
-            catch (UnauthorizedException)
-            {
-                return Unauthorized("Only patients can login from public app");
-            }
+       
             catch (UserIsBlockedException)
             {
                 return Unauthorized("Your account has been blocked");
@@ -106,15 +96,13 @@ namespace HospitalAPI.Controllers
 
        
 
-        [HttpPut("blockUser")]
-        public ActionResult BlockUser(Guid id)
+        [HttpPut("blockUser/{id}")]
+        public ActionResult BlockUser(string id)
         {
             try
             {
-                //TODO Provera ako je otkazao 3 pregleda i obavestenje na mail-u
-                User user = _userService.GetById(id);
-                user.Block();
-                return Ok(user);
+                _userService.BlockUser(Guid.Parse(id));
+                return Ok(new { message = "User is block" });
             }
             catch (Exception e)
             {
@@ -123,15 +111,13 @@ namespace HospitalAPI.Controllers
         
         }
 
-        [HttpPut("unblockUser")]
-        public ActionResult UnlockUser(Guid id)
+        [HttpPut("unblockUser/{id}")]
+        public ActionResult UnblockUser(string id)
         {
             try
             {
-                //TODO Provera ako je otkazao 3 pregleda i obavestenje na mail-u
-                User user = _userService.GetById(id);
-                user.Unblock();
-                return Ok(user);
+                _userService.Unblock(Guid.Parse(id));
+                return Ok(new { message = "User is unblock" });
             }
             catch (Exception e)
             {
@@ -140,7 +126,19 @@ namespace HospitalAPI.Controllers
 
         }
 
-       
+        [HttpGet("allSuspicious")]
+        public ActionResult GetAllUserBySuspiciousActivity()
+        {
+            try
+            {
+                return Ok(_userService.GetAllUserBySuspiciousActivity().Select(sp => new SuspiciousUserDTO(sp.Id ,sp.Email.Address, sp.IsBlock, sp.NumberOfSuspiciousActivitiesInRecentPeriod())).ToList());
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+
+            }
+        }
     }
 }

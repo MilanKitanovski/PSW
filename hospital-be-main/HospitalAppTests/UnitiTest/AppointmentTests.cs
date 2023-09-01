@@ -21,8 +21,11 @@ namespace HospitalAppTests.UnitiTest
         public void Check_Date_Range_true()
         {
             DateTime now = DateTime.Now;
-            DateTime startDate = new DateTime(now.Year, now.Month, now.Day + 1, 8, 30, 0);
-            DateTime endDate = new DateTime(now.Year, now.Month, now.Day + 3, 8, 30, 0);
+         
+            DateTime startDate = new DateTime(now.Year, now.Month, now.Day, 8, 30, 0);
+            startDate = startDate.AddDays(1);
+            DateTime endDate = new DateTime(now.Year, now.Month, now.Day, 8, 30, 0);
+            endDate = endDate.AddDays(3);
 
             Doctor doctor = new Doctor(Guid.NewGuid(), "Doc", "Doc", "Doccc", Specialization.Opsta_praksa);
             Patient patient = new Patient(Guid.NewGuid(), "Milana", "Kitanovski", "0606060", Gender.Female);
@@ -37,7 +40,8 @@ namespace HospitalAppTests.UnitiTest
         {
             DateTime now = DateTime.Now;
             DateTime startDate = new DateTime(now.Year, now.Month, now.Day, 8, 30, 0);
-            DateTime endDate = new DateTime(now.Year, now.Month, now.Day + 3, 8, 30, 0);
+            DateTime endDate = new DateTime(now.Year, now.Month, now.Day, 8, 30, 0);
+            endDate =endDate.AddDays(3);
 
             Doctor doctor = new Doctor(Guid.NewGuid(), "Doc", "Doc", "Doccc", Specialization.Opsta_praksa);
             Patient patient = new Patient(Guid.NewGuid(), "Milana", "Kitanovski", "0606060", Gender.Female);

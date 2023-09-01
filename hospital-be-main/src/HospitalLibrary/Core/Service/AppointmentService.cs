@@ -73,7 +73,7 @@ namespace HospitalLibrary.Core.Service
              _appointmentRepository.Update(appointment);
         }
 
-        public bool CanceledAppointment(Guid appointmentId)
+        public bool CanceledAppointment(Guid appointmentId, Guid patientId)
         {
             Appointment appointment = _appointmentRepository.GetById(appointmentId);
             
@@ -81,11 +81,12 @@ namespace HospitalLibrary.Core.Service
             {
                 return false;
             }
-
-            appointment.Status = Status.Canceled;
-            _appointmentRepository.Update(appointment);
+            
+            appointment.CancelAppointment();
+            _appointmentRepository.Update(appointment); 
             return true;
         }
+
         public List<SearchAppointmentResultDTO> SearchForPatientDoctor(SearchAppointmentDTO dto, Guid perosonId)
         {
             List<DateRange> dates = GetAppointmentsDateTime(dto.Range.StartTime, dto.Range.EndTime);
@@ -104,22 +105,6 @@ namespace HospitalLibrary.Core.Service
                 }
             }
 
-            if(result.Count == 0) 
-            {
-                dto.Range.StartTime = FindStartDate(dto.Range.StartTime);
-                dto.Range.EndTime = dto.Range.EndTime.AddDays(7);
-                dates = GetAppointmentsDateTime(dto.Range.StartTime, dto.Range.EndTime);
-                foreach (DateRange dr in dates) //provera na +-7 dana
-                {
-                    if (GetAll().Any(a => a.DoctorId == doctorId && a.Status != Status.Canceled && a.Range.StartTime == dr.StartTime && a.Range.EndTime == dr.EndTime) == false) //da li ima neko ko je zakazao termin
-                    {
-                        var doc = _doctorRepository.GetById(doctorId);
-                        var FullName = doc.GetFullName();
-                        result.Add(new SearchAppointmentResultDTO(doctorId, new DateRange(dr.StartTime, dr.EndTime), FullName));
-                        return result; //lista u sebi ima samo jedan termin
-                    }
-                }
-            }
 
             return result;
         }   
