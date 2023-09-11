@@ -8,6 +8,7 @@ import {ScheduleAppointmentDTO} from "../../hospital/model/scheduleAppointmentDT
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {UserService} from "../../hospital/services/user.service";
 import {SpecializationSearchAppointmentDTO} from "../../hospital/model/specializationSearchAppointmentDTO";
+import {DoctorService} from "../../hospital/services/doctor.service";
 
 
 const today = new Date();
@@ -35,12 +36,12 @@ export class SpecialistScheduleComponent implements OnInit {
   displayedColumns: string[] = ['Time', 'Doctor', 'Schedule'];
 
   constructor(private appointmentService: AppointmentService,  @Inject(MAT_DIALOG_DATA) public data: any,
-              private userService:UserService,   private formBuilder: FormBuilder,) {
+              private userService:UserService, private doctorService: DoctorService,  private formBuilder: FormBuilder,) {
 
     this.registerForm = this.formBuilder.group({
       doctorId: ['', Validators.required],
     })
-    this.userService.GetDoctorsBySpecijalization(this.data.specialization).subscribe((data: any) => {
+    this.doctorService.GetDoctorsBySpecijalization(this.data.specialization).subscribe((data: any) => {
       this.doctors = data;
       if (this.doctors.length > 0) {
         this.registerForm.patchValue({ doctorId: this.doctors[0].id }); // Assuming the ID property of the doctor object is named "id"
@@ -64,9 +65,6 @@ export class SpecialistScheduleComponent implements OnInit {
     let range: DateRange = new DateRange(this.campaignOne.get('start')?.value as Date, this.campaignOne.get('end')?.value as Date);
 
     let app : SpecializationSearchAppointmentDTO = new SpecializationSearchAppointmentDTO(    this.registerForm.get('doctorId')?.value,range);
-
-
-
 
       this.appointmentService.SearchByDoctorsDirection(app).subscribe((data ) => {
         this.dataSource = data;

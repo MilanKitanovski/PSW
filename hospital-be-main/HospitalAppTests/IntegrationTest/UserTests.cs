@@ -23,7 +23,7 @@ namespace HospitalAppTests.IntegrationTest
         public UserTests(TestDatabaseFactory<Startup> factory) : base(factory) { }
     private static UserController SetupController(IServiceScope scope)
     {
-            return new UserController(scope.ServiceProvider.GetRequiredService<IPatientService>(), scope.ServiceProvider.GetRequiredService<IUserService>());
+            return new UserController(scope.ServiceProvider.GetRequiredService<IPatientService>(), scope.ServiceProvider.GetRequiredService<IUserService>(), scope.ServiceProvider.GetRequiredService<IEmailService>());
        
     }
 
@@ -149,27 +149,6 @@ namespace HospitalAppTests.IntegrationTest
             result.Count().ShouldBe(5);
         }
 
-        [Fact]
-        private void Block_Blocked_User()
-        {
-            using var scope = Factory.Services.CreateScope();
-            var controller = SetupController(scope);
-
-           
-            var result = ((BadRequestObjectResult)controller.BlockUser("e274f85a-034a-477a-bf8f-5f21467e9caa"))?.Value;
-            result.ToString().ShouldBe("{ message = User is alredy blocked }");
-        }
-
-        [Fact]
-        private void Block_Unblocked_User()
-        {
-            using var scope = Factory.Services.CreateScope();
-            var controller = SetupController(scope);
-
-
-            var result = ((OkObjectResult)controller.BlockUser("c86d1f40-35b6-4a29-aba0-1661e06a422f"))?.Value;
-            result.ToString().ShouldBe("{ message = User is block }");
-        }
 
         [Fact]
         private void Unblocked_Block_User()

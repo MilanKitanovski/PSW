@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using HospitalAPI.DTO;
 using HospitalAPI.Model;
 using HospitalLibrary.Core.Model;

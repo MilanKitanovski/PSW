@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using HospitalAPI.DTO;
 using HospitalAPI.Enum;
 using HospitalAPI.Model;
@@ -9,6 +10,7 @@ using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Core.Service.Interfaces;
 using HospitalLibrary.Exceptions;
 using HospitalLibrary.Settings;
+using MimeKit;
 
 namespace HospitalLibrary.Core.Service
 {
@@ -16,12 +18,14 @@ namespace HospitalLibrary.Core.Service
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
+        private readonly IEmailService _emailService;
 
 
-        public UserService( IUserRepository userRepository, IJwtService jwtService)
+        public UserService( IUserRepository userRepository, IJwtService jwtService, IEmailService emailService)
         {
             _userRepository = userRepository;
             _jwtService = jwtService;
+            _emailService = emailService;
         }
         
         public IEnumerable<User> GetAll()
@@ -53,14 +57,14 @@ namespace HospitalLibrary.Core.Service
         public void BlockUser(Guid id)
         {
             User user = _userRepository.GetById(id);
-            if(user == null)
+            if (user == null)
             {
                 throw new NotFoundException("Not Found");
             }
             user.Block();
-            _userRepository.Update(user);
-
+            _userRepository.Update(user);         
         }
+
         public string Authenticate(string email, string password)
         {
             //Password enteredPassword = new Password(password);

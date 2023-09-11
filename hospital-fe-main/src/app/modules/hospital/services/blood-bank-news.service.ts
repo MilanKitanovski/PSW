@@ -1,46 +1,48 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Register} from "../model/register.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
-  apiHost: string = 'http://localhost:16177/api/user';
+export class BloodBankNewsService {
+  apiHost: string = 'http://localhost:16177/api/bloodBankNews';
   headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
   constructor(private http:HttpClient) { }
 
-  registration(user : Register) : Observable<any> {
-    return this.http.post<Register>(this.apiHost + '/register', user);
-  }
-
-  login(user: any){
-    return this.http.post<any>(this.apiHost+'/login', user);
-  }
-
-  GetAllUserBySuspiciousActivity(): Observable<any> {
+  GetAllNews(): Observable<any> {
     let headers = new HttpHeaders({
       "Content-Type": "application/json",
       "Authorization": "Bearer " + localStorage.getItem("token"),
     });
-    return this.http.get<any>(this.apiHost + '/allSuspicious', {headers});
+    return this.http.get<any>(this.apiHost + '/getAllNews', {headers});
   }
 
-  UnblockUser(id: any):Observable<any> {
+  ArchiveNews(id: any):Observable<any> {
     let headers = new HttpHeaders({
       "Content-Type": "application/json",
       "Authorization": "Bearer " + localStorage.getItem("token"),
     });
-    return this.http.put<any>(this.apiHost + '/unblockUser/' +id , {headers});
+    return this.http.put<any>(this.apiHost + '/archive/' +id , {headers});
   }
 
 
-  BlockUser(id:any):Observable<any> {
+  PublishNews(id:any):Observable<any> {
+    console.log(1.1)
     let headers = new HttpHeaders({
       "Content-Type": "application/json",
       "Authorization": "Bearer " + localStorage.getItem("token"),
     });
-    return this.http.put<any>(this.apiHost + '/blockUser/' +id , {headers});
+    console.log(1.2)
+    return this.http.put<any>(this.apiHost + '/publish/' +id ,[], {headers});
+    console.log(1.3)
+  }
+
+  Consume():Observable<any> {
+    let headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+    });
+    return this.http.put<any>(this.apiHost + '/consume' , {headers});
   }
 }

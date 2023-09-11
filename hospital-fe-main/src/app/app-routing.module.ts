@@ -23,6 +23,7 @@ import {NavbarComponent} from "./modules/pages/navbar/navbar.component";
 import {CreateNotificationComponent} from "./modules/pages/create-notification/create-notification.component";
 import {GraphTableComponent} from "./modules/pages/graph/graph-table/graph-table.component";
 import {FatsComponent} from "./modules/pages/graph/fats/fats.component";
+import {BloodBankNewsComponent} from "./modules/pages/blood-bank-news/blood-bank-news.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -42,8 +43,9 @@ const routes: Routes = [
   { path: "createReport", component: CreateReportComponent, canActivate:[RoleGuardService] ,data: {role:['Doctor']}},
   { path: "createNotification", component: CreateNotificationComponent, canActivate:[RoleGuardService] ,data: {role:['Admin']}},
   { path: "allReports", component: ViewReportsPatientComponent, canActivate:[RoleGuardService] ,data: {role:['Patient']}},
-  {path: "suspiciousUsers", component: SuspiciousUsersComponent, canActivate:[RoleGuardService], data:{role:['Admin']}},
+  { path: "suspiciousUsers", component: SuspiciousUsersComponent, canActivate:[RoleGuardService], data:{role:['Admin']}},
   { path: "graph", component: GraphTableComponent, canActivate:[RoleGuardService], data:{role:['Patient']}},
+  { path: "news", component: BloodBankNewsComponent, canActivate:[RoleGuardService], data:{role:['Admin']}},
   { path: '*', redirectTo: '/register',},
 ];
 

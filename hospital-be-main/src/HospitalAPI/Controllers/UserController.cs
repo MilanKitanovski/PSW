@@ -24,6 +24,9 @@ using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Core.Enum;
 using System.Collections.Generic;
 using System.Linq;
+using HospitalLibrary.Settings;
+using MimeKit;
+using HospitalLibrary.Core.Repository;
 
 namespace HospitalAPI.Controllers
 {
@@ -33,10 +36,12 @@ namespace HospitalAPI.Controllers
     {
         private readonly IPatientService _petientService;
         private readonly IUserService _userService;
-        public UserController( IPatientService petientService, IUserService userService)
+        private readonly IEmailService _emailService;
+        public UserController( IPatientService petientService, IUserService userService, IEmailService emailService)
         {
             _petientService = petientService;
             _userService = userService;
+            _emailService = emailService;
         }
 
 
@@ -94,21 +99,28 @@ namespace HospitalAPI.Controllers
         }
 
 
-       
+
 
         [HttpPut("blockUser/{id}")]
-        public ActionResult BlockUser(string id)
+        public async Task<ActionResult> BlockUser(string id)
         {
             try
             {
                 _userService.BlockUser(Guid.Parse(id));
-                return Ok(new { message = "User is block" });
+                User user = _userService.GetById(Guid.Parse(id));
+                String recipientName = "Client";
+                String recipientEmail = user.Email.Address;
+                String subject = "You have been blocked";
+                String emailText = "You have been blocked ";
+                MimeMessage emailMessage = EmailSending.CreateTxtEmail(recipientName, recipientEmail, subject, emailText);
+
+                await _emailService.SendEmail(emailMessage);
+                return Ok(new { message = "User is blocked" });
             }
             catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }
-        
         }
 
         [HttpPut("unblockUser/{id}")]

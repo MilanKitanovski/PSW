@@ -6,6 +6,7 @@ import {FormGroup, FormControl, Validators, Form, FormBuilder} from "@angular/fo
 import {HttpErrorResponse} from "@angular/common/http";
 import {ToastrService} from "ngx-toastr";
 import {BlogDTO} from "../../hospital/model/blogDTO";
+import {DoctorService} from "../../hospital/services/doctor.service";
 
 @Component({
   selector: 'app-register',
@@ -18,12 +19,13 @@ export class RegisterComponent implements OnInit {
   registerForm! : FormGroup;
   constructor(
     private userService: UserService,
+    private doctorService: DoctorService,
     private router: Router,
     private formBuilder: FormBuilder,
     private toastr: ToastrService
   ) { }
   ngOnInit(): void {
-      this.userService.getAllDoctor_Opste_Prakse().subscribe((data: any) => {
+      this.doctorService.getAllDoctor_Opste_Prakse().subscribe((data: any) => {
         this.doctors = data;
         console.log(this.doctors)
       });

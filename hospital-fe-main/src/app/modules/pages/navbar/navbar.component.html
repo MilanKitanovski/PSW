@@ -8,7 +8,6 @@
     <!-- Displayed only for Patient role -->
     <ng-container *ngIf="userRole === 'Patient'">
       <li><a routerLink="/regularSchedule">Regular scheduling</a></li>
-      <li><a routerLink="/specialistSchedule">Schedule for specialist</a></li>
       <li><a routerLink="/createIData">Create internal data</a></li>
       <li><a routerLink="/allIDatas">All internal datas</a></li>
       <li><a routerLink="/allBlogs">All blogs</a></li>
@@ -21,13 +20,13 @@
     <ng-container *ngIf="userRole === 'Admin'">
       <li><a routerLink="/createNotification">Create notification</a></li>
       <li><a routerLink="/suspiciousUsers">Suspicious users</a></li>
+      <li><a routerLink="/news">Blood bank news</a></li>
     </ng-container>
     <!-- Displayed only for Doctor role -->
     <ng-container *ngIf="userRole === 'Doctor'">
-      <li><a routerLink="/createDirection">Create Direction</a></li>
       <li><a routerLink="/allBlogs">All blogs</a></li>
       <li><a routerLink="/createBlog">Create blogs</a></li>
-      <li><a routerLink="/createReport">Create Report</a></li>
+      <li><a routerLink="/allAppointments">All Appointments</a></li>
     </ng-container>
   </ul>
 </nav>

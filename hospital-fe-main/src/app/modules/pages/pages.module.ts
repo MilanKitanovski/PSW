@@ -31,13 +31,13 @@ import { CreateReportComponent } from './create-report/create-report.component';
 import { ViewReportsPatientComponent } from './view-reports-patient/view-reports-patient.component';
 import { SuspiciousUsersComponent } from './suspicious-users/suspicious-users.component';
 import { CreateNotificationComponent } from './create-notification/create-notification.component';
-
 import { GraphTableComponent } from './graph/graph-table/graph-table.component';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import { FatsComponent } from './graph/fats/fats.component';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { WeightComponent } from './graph/weight/weight.component';
 import { BloodSugarComponent } from './graph/blood-sugar/blood-sugar.component';
+import { BloodBankNewsComponent } from './blood-bank-news/blood-bank-news.component';
 
 
 @NgModule({
@@ -64,6 +64,7 @@ import { BloodSugarComponent } from './graph/blood-sugar/blood-sugar.component';
      FatsComponent,
      WeightComponent,
      BloodSugarComponent,
+     BloodBankNewsComponent,
 
   ],
   imports: [

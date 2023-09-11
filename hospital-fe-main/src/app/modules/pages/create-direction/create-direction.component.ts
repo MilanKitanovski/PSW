@@ -14,7 +14,7 @@ import {DirectionService} from "../../hospital/services/direction.service";
   styleUrls: ['./create-direction.component.css']
 })
 export class CreateDirectionComponent implements OnInit {
-  specialization : any[] = [{id:0,text:"Dermatolog"}, {id:1,text:"Kardiolog"}, {id:2,text:"Fizijatar"}];
+  specialization : any[] = [{id:0,text:"Dermatolog"}, {id:2,text:"Kardiolog"}, {id:3,text:"Fizijatar"}];
   directionForm! : FormGroup;
   constructor(private directionService:DirectionService, private formBuilder: FormBuilder,  @Inject(MAT_DIALOG_DATA) public data: any,     private toastr: ToastrService,) {}
 

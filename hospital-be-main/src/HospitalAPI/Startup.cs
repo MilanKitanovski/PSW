@@ -3,6 +3,7 @@ using HospitalLibrary.Core.Repository;
 using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Core.Service;
 using HospitalLibrary.Core.Service.Interfaces;
+using HospitalLibrary.Mapper;
 using HospitalLibrary.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -78,6 +79,7 @@ namespace HospitalAPI
                };
            });
             services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IBlogRepository, BlogRepository>();
@@ -109,7 +111,13 @@ namespace HospitalAPI
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IReportService, ReportService>();
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IBloodBankNewsRepository, BloodBankNewsRepository>();
+            services.AddScoped<IBloodBankNewsService, BloodBankNewsService>();
+
+
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+
+            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
